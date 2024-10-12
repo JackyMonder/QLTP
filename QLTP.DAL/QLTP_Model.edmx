@@ -1,0 +1,685 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="QLTP_Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Name="Username" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Role" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Bill">
+          <Key>
+            <PropertyRef Name="Bill_id" />
+          </Key>
+          <Property Name="Bill_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Cus_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Emp_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Product_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Create_date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Bill_detail">
+          <Key>
+            <PropertyRef Name="Bill_id" />
+            <PropertyRef Name="Product_id" />
+          </Key>
+          <Property Name="Bill_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Product_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Discount_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Amount" Type="int" Nullable="false" />
+          <Property Name="Total_price" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Cus_id" />
+          </Key>
+          <Property Name="Cus_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Rank_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Full_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Sex" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Phone_number" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Experience" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Discount_by_Rank">
+          <Key>
+            <PropertyRef Name="Discount_id" />
+          </Key>
+          <Property Name="Discount_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Rank_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Discount_percent" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="Emp_id" />
+          </Key>
+          <Property Name="Emp_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Full_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Sex" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Phone_number" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Position" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Salary" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="Product_id" />
+          </Key>
+          <Property Name="Product_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Product_type_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Product_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Sell_Price" Type="float" Nullable="false" />
+          <Property Name="Expired_day" Type="datetime" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="On_discount" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Product_type">
+          <Key>
+            <PropertyRef Name="Product_type_id" />
+          </Key>
+          <Property Name="Product_type_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Product_type_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Rank">
+          <Key>
+            <PropertyRef Name="Rank_id" />
+          </Key>
+          <Property Name="Rank_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Rank_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Bill__Cus_id__5070F446">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="Cus_id" />
+            </Principal>
+            <Dependent Role="Bill">
+              <PropertyRef Name="Cus_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Bill__Emp_id__5165187F">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Emp_id" />
+            </Principal>
+            <Dependent Role="Bill">
+              <PropertyRef Name="Emp_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Bill_deta__Bill___52593CB8">
+          <End Role="Bill" Type="Self.Bill" Multiplicity="1" />
+          <End Role="Bill_detail" Type="Self.Bill_detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bill">
+              <PropertyRef Name="Bill_id" />
+            </Principal>
+            <Dependent Role="Bill_detail">
+              <PropertyRef Name="Bill_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Bill_deta__Disco__5535A963">
+          <End Role="Discount_by_Rank" Type="Self.Discount_by_Rank" Multiplicity="1" />
+          <End Role="Bill_detail" Type="Self.Bill_detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Discount_by_Rank">
+              <PropertyRef Name="Discount_id" />
+            </Principal>
+            <Dependent Role="Bill_detail">
+              <PropertyRef Name="Discount_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Bill_deta__Produ__5629CD9C">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="Bill_detail" Type="Self.Bill_detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Product_id" />
+            </Principal>
+            <Dependent Role="Bill_detail">
+              <PropertyRef Name="Product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Customer__Rank_i__534D60F1">
+          <End Role="Rank" Type="Self.Rank" Multiplicity="1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rank">
+              <PropertyRef Name="Rank_id" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="Rank_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Customer__Userna__4F7CD00D">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="Username" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Discount___Rank___5441852A">
+          <End Role="Rank" Type="Self.Rank" Multiplicity="1" />
+          <End Role="Discount_by_Rank" Type="Self.Discount_by_Rank" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rank">
+              <PropertyRef Name="Rank_id" />
+            </Principal>
+            <Dependent Role="Discount_by_Rank">
+              <PropertyRef Name="Rank_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Employee__Userna__4E88ABD4">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="Username" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__Product__571DF1D5">
+          <End Role="Product_type" Type="Self.Product_type" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product_type">
+              <PropertyRef Name="Product_type_id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="Product_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QLTP_ModelStoreContainer">
+          <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Bill" EntityType="Self.Bill" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Bill_detail" EntityType="Self.Bill_detail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Discount_by_Rank" EntityType="Self.Discount_by_Rank" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product_type" EntityType="Self.Product_type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rank" EntityType="Self.Rank" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Bill__Cus_id__5070F446" Association="Self.FK__Bill__Cus_id__5070F446">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Bill" EntitySet="Bill" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Bill__Emp_id__5165187F" Association="Self.FK__Bill__Emp_id__5165187F">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Bill" EntitySet="Bill" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Bill_deta__Bill___52593CB8" Association="Self.FK__Bill_deta__Bill___52593CB8">
+            <End Role="Bill" EntitySet="Bill" />
+            <End Role="Bill_detail" EntitySet="Bill_detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Bill_deta__Disco__5535A963" Association="Self.FK__Bill_deta__Disco__5535A963">
+            <End Role="Discount_by_Rank" EntitySet="Discount_by_Rank" />
+            <End Role="Bill_detail" EntitySet="Bill_detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Bill_deta__Produ__5629CD9C" Association="Self.FK__Bill_deta__Produ__5629CD9C">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Bill_detail" EntitySet="Bill_detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Customer__Rank_i__534D60F1" Association="Self.FK__Customer__Rank_i__534D60F1">
+            <End Role="Rank" EntitySet="Rank" />
+            <End Role="Customer" EntitySet="Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Customer__Userna__4F7CD00D" Association="Self.FK__Customer__Userna__4F7CD00D">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Customer" EntitySet="Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Discount___Rank___5441852A" Association="Self.FK__Discount___Rank___5441852A">
+            <End Role="Rank" EntitySet="Rank" />
+            <End Role="Discount_by_Rank" EntitySet="Discount_by_Rank" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Employee__Userna__4E88ABD4" Association="Self.FK__Employee__Userna__4E88ABD4">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__Product__571DF1D5" Association="Self.FK__Product__Product__571DF1D5">
+            <End Role="Product_type" EntitySet="Product_type" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="QLTP_Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Role" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK__Customer__Userna__4F7CD00D" FromRole="Account" ToRole="Customer" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK__Employee__Userna__4E88ABD4" FromRole="Account" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="Bill">
+          <Key>
+            <PropertyRef Name="Bill_id" />
+          </Key>
+          <Property Name="Bill_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Cus_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Emp_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Product_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Create_date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK__Bill__Cus_id__5070F446" FromRole="Bill" ToRole="Customer" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK__Bill__Emp_id__5165187F" FromRole="Bill" ToRole="Employee" />
+          <NavigationProperty Name="Bill_detail" Relationship="Self.FK__Bill_deta__Bill___52593CB8" FromRole="Bill" ToRole="Bill_detail" />
+        </EntityType>
+        <EntityType Name="Bill_detail">
+          <Key>
+            <PropertyRef Name="Bill_id" />
+            <PropertyRef Name="Product_id" />
+          </Key>
+          <Property Name="Bill_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Product_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Discount_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Amount" Type="Int32" Nullable="false" />
+          <Property Name="Total_price" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Bill" Relationship="Self.FK__Bill_deta__Bill___52593CB8" FromRole="Bill_detail" ToRole="Bill" />
+          <NavigationProperty Name="Discount_by_Rank" Relationship="Self.FK__Bill_deta__Disco__5535A963" FromRole="Bill_detail" ToRole="Discount_by_Rank" />
+          <NavigationProperty Name="Product" Relationship="Self.FK__Bill_deta__Produ__5629CD9C" FromRole="Bill_detail" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Cus_id" />
+          </Key>
+          <Property Name="Cus_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Rank_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Full_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Sex" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Phone_number" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Experience" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="Self.FK__Customer__Userna__4F7CD00D" FromRole="Customer" ToRole="Account" />
+          <NavigationProperty Name="Bill" Relationship="Self.FK__Bill__Cus_id__5070F446" FromRole="Customer" ToRole="Bill" />
+          <NavigationProperty Name="Rank" Relationship="Self.FK__Customer__Rank_i__534D60F1" FromRole="Customer" ToRole="Rank" />
+        </EntityType>
+        <EntityType Name="Discount_by_Rank">
+          <Key>
+            <PropertyRef Name="Discount_id" />
+          </Key>
+          <Property Name="Discount_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Rank_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Discount_percent" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Bill_detail" Relationship="Self.FK__Bill_deta__Disco__5535A963" FromRole="Discount_by_Rank" ToRole="Bill_detail" />
+          <NavigationProperty Name="Rank" Relationship="Self.FK__Discount___Rank___5441852A" FromRole="Discount_by_Rank" ToRole="Rank" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="Emp_id" />
+          </Key>
+          <Property Name="Emp_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Full_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Sex" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Phone_number" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Position" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Salary" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="Self.FK__Employee__Userna__4E88ABD4" FromRole="Employee" ToRole="Account" />
+          <NavigationProperty Name="Bill" Relationship="Self.FK__Bill__Emp_id__5165187F" FromRole="Employee" ToRole="Bill" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="Product_id" />
+          </Key>
+          <Property Name="Product_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Product_type_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Product_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Sell_Price" Type="Double" Nullable="false" />
+          <Property Name="Expired_day" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="On_discount" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Bill_detail" Relationship="Self.FK__Bill_deta__Produ__5629CD9C" FromRole="Product" ToRole="Bill_detail" />
+          <NavigationProperty Name="Product_type" Relationship="Self.FK__Product__Product__571DF1D5" FromRole="Product" ToRole="Product_type" />
+        </EntityType>
+        <EntityType Name="Product_type">
+          <Key>
+            <PropertyRef Name="Product_type_id" />
+          </Key>
+          <Property Name="Product_type_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Product_type_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Product" Relationship="Self.FK__Product__Product__571DF1D5" FromRole="Product_type" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Rank">
+          <Key>
+            <PropertyRef Name="Rank_id" />
+          </Key>
+          <Property Name="Rank_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Rank_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK__Customer__Rank_i__534D60F1" FromRole="Rank" ToRole="Customer" />
+          <NavigationProperty Name="Discount_by_Rank" Relationship="Self.FK__Discount___Rank___5441852A" FromRole="Rank" ToRole="Discount_by_Rank" />
+        </EntityType>
+        <Association Name="FK__Customer__Userna__4F7CD00D">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="Username" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Employee__Userna__4E88ABD4">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="Username" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Bill__Cus_id__5070F446">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="Cus_id" />
+            </Principal>
+            <Dependent Role="Bill">
+              <PropertyRef Name="Cus_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Bill__Emp_id__5165187F">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Emp_id" />
+            </Principal>
+            <Dependent Role="Bill">
+              <PropertyRef Name="Emp_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Bill_deta__Bill___52593CB8">
+          <End Role="Bill" Type="Self.Bill" Multiplicity="1" />
+          <End Role="Bill_detail" Type="Self.Bill_detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bill">
+              <PropertyRef Name="Bill_id" />
+            </Principal>
+            <Dependent Role="Bill_detail">
+              <PropertyRef Name="Bill_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Bill_deta__Disco__5535A963">
+          <End Role="Discount_by_Rank" Type="Self.Discount_by_Rank" Multiplicity="1" />
+          <End Role="Bill_detail" Type="Self.Bill_detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Discount_by_Rank">
+              <PropertyRef Name="Discount_id" />
+            </Principal>
+            <Dependent Role="Bill_detail">
+              <PropertyRef Name="Discount_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Bill_deta__Produ__5629CD9C">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="Bill_detail" Type="Self.Bill_detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Product_id" />
+            </Principal>
+            <Dependent Role="Bill_detail">
+              <PropertyRef Name="Product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Customer__Rank_i__534D60F1">
+          <End Role="Rank" Type="Self.Rank" Multiplicity="1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rank">
+              <PropertyRef Name="Rank_id" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="Rank_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Discount___Rank___5441852A">
+          <End Role="Rank" Type="Self.Rank" Multiplicity="1" />
+          <End Role="Discount_by_Rank" Type="Self.Discount_by_Rank" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rank">
+              <PropertyRef Name="Rank_id" />
+            </Principal>
+            <Dependent Role="Discount_by_Rank">
+              <PropertyRef Name="Rank_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__Product__571DF1D5">
+          <End Role="Product_type" Type="Self.Product_type" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product_type">
+              <PropertyRef Name="Product_type_id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="Product_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QLTP_Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Account" EntityType="Self.Account" />
+          <EntitySet Name="Bill" EntityType="Self.Bill" />
+          <EntitySet Name="Bill_detail" EntityType="Self.Bill_detail" />
+          <EntitySet Name="Customer" EntityType="Self.Customer" />
+          <EntitySet Name="Discount_by_Rank" EntityType="Self.Discount_by_Rank" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" />
+          <EntitySet Name="Product" EntityType="Self.Product" />
+          <EntitySet Name="Product_type" EntityType="Self.Product_type" />
+          <EntitySet Name="Rank" EntityType="Self.Rank" />
+          <AssociationSet Name="FK__Customer__Userna__4F7CD00D" Association="Self.FK__Customer__Userna__4F7CD00D">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Customer" EntitySet="Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Employee__Userna__4E88ABD4" Association="Self.FK__Employee__Userna__4E88ABD4">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Bill__Cus_id__5070F446" Association="Self.FK__Bill__Cus_id__5070F446">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Bill" EntitySet="Bill" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Bill__Emp_id__5165187F" Association="Self.FK__Bill__Emp_id__5165187F">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Bill" EntitySet="Bill" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Bill_deta__Bill___52593CB8" Association="Self.FK__Bill_deta__Bill___52593CB8">
+            <End Role="Bill" EntitySet="Bill" />
+            <End Role="Bill_detail" EntitySet="Bill_detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Bill_deta__Disco__5535A963" Association="Self.FK__Bill_deta__Disco__5535A963">
+            <End Role="Discount_by_Rank" EntitySet="Discount_by_Rank" />
+            <End Role="Bill_detail" EntitySet="Bill_detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Bill_deta__Produ__5629CD9C" Association="Self.FK__Bill_deta__Produ__5629CD9C">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Bill_detail" EntitySet="Bill_detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Customer__Rank_i__534D60F1" Association="Self.FK__Customer__Rank_i__534D60F1">
+            <End Role="Rank" EntitySet="Rank" />
+            <End Role="Customer" EntitySet="Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Discount___Rank___5441852A" Association="Self.FK__Discount___Rank___5441852A">
+            <End Role="Rank" EntitySet="Rank" />
+            <End Role="Discount_by_Rank" EntitySet="Discount_by_Rank" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__Product__571DF1D5" Association="Self.FK__Product__Product__571DF1D5">
+            <End Role="Product_type" EntitySet="Product_type" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="QLTP_ModelStoreContainer" CdmEntityContainer="QLTP_Entities">
+          <EntitySetMapping Name="Account">
+            <EntityTypeMapping TypeName="QLTP_Model.Account">
+              <MappingFragment StoreEntitySet="Account">
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Bill">
+            <EntityTypeMapping TypeName="QLTP_Model.Bill">
+              <MappingFragment StoreEntitySet="Bill">
+                <ScalarProperty Name="Bill_id" ColumnName="Bill_id" />
+                <ScalarProperty Name="Cus_id" ColumnName="Cus_id" />
+                <ScalarProperty Name="Emp_id" ColumnName="Emp_id" />
+                <ScalarProperty Name="Product_id" ColumnName="Product_id" />
+                <ScalarProperty Name="Create_date" ColumnName="Create_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Bill_detail">
+            <EntityTypeMapping TypeName="QLTP_Model.Bill_detail">
+              <MappingFragment StoreEntitySet="Bill_detail">
+                <ScalarProperty Name="Bill_id" ColumnName="Bill_id" />
+                <ScalarProperty Name="Product_id" ColumnName="Product_id" />
+                <ScalarProperty Name="Discount_id" ColumnName="Discount_id" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Total_price" ColumnName="Total_price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customer">
+            <EntityTypeMapping TypeName="QLTP_Model.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="Cus_id" ColumnName="Cus_id" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Rank_id" ColumnName="Rank_id" />
+                <ScalarProperty Name="Full_name" ColumnName="Full_name" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="Phone_number" ColumnName="Phone_number" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Experience" ColumnName="Experience" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Discount_by_Rank">
+            <EntityTypeMapping TypeName="QLTP_Model.Discount_by_Rank">
+              <MappingFragment StoreEntitySet="Discount_by_Rank">
+                <ScalarProperty Name="Discount_id" ColumnName="Discount_id" />
+                <ScalarProperty Name="Rank_id" ColumnName="Rank_id" />
+                <ScalarProperty Name="Discount_percent" ColumnName="Discount_percent" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employee">
+            <EntityTypeMapping TypeName="QLTP_Model.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="Emp_id" ColumnName="Emp_id" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Full_name" ColumnName="Full_name" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="Phone_number" ColumnName="Phone_number" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product">
+            <EntityTypeMapping TypeName="QLTP_Model.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="Product_id" ColumnName="Product_id" />
+                <ScalarProperty Name="Product_type_id" ColumnName="Product_type_id" />
+                <ScalarProperty Name="Product_name" ColumnName="Product_name" />
+                <ScalarProperty Name="Sell_Price" ColumnName="Sell_Price" />
+                <ScalarProperty Name="Expired_day" ColumnName="Expired_day" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="On_discount" ColumnName="On_discount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product_type">
+            <EntityTypeMapping TypeName="QLTP_Model.Product_type">
+              <MappingFragment StoreEntitySet="Product_type">
+                <ScalarProperty Name="Product_type_id" ColumnName="Product_type_id" />
+                <ScalarProperty Name="Product_type_name" ColumnName="Product_type_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rank">
+            <EntityTypeMapping TypeName="QLTP_Model.Rank">
+              <MappingFragment StoreEntitySet="Rank">
+                <ScalarProperty Name="Rank_id" ColumnName="Rank_id" />
+                <ScalarProperty Name="Rank_name" ColumnName="Rank_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

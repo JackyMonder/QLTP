@@ -8,25 +8,21 @@ namespace QLTP.BLL
 {
     public class Customer_service
     {
-        // Method to add a new customer
         public int Customer_add(Customer customer)
         {
             if (customer == null)
-                return -1; // Null error
+                return -1; 
 
             using (QLTP_Entities db = new QLTP_Entities())
             {
-                // Check if the customer already exists based on some unique criteria like User_id or Gmail
-                if (db.Customer.Any(n => n.Gmail.Equals(customer.Gmail, StringComparison.OrdinalIgnoreCase)))
-                    return -2; // Email already exists
+                if (db.Customer.Any(n => n.Email.Equals(customer.Email, StringComparison.OrdinalIgnoreCase)))
+                    return -2;
 
                 db.Customer.Add(customer);
                 db.SaveChanges();
-                return 0; // Successful operation
+                return 0;
             }
         }
-
-        // Method to update an existing customer
         public int Customer_update(Customer customer)
         {
             if (customer == null) return -1; // Error: null customer object
@@ -34,7 +30,7 @@ namespace QLTP.BLL
             using (QLTP_Entities db = new QLTP_Entities())
             {
                 // Find the existing customer by some unique field, for example, User_id
-                var customerToUpdate = db.Customer.FirstOrDefault(n => n.Customer_id == customer.Customer_id);
+                var customerToUpdate = db.Customer.FirstOrDefault(n => n.Cus_id == customer.Cus_id);
 
                 if (customerToUpdate == null)
                     return -2; // Error: customer not found
@@ -42,11 +38,10 @@ namespace QLTP.BLL
                 // Update customer fields
                 customerToUpdate.Full_name = customer.Full_name;
                 customerToUpdate.Address = customer.Address;
-                customerToUpdate.Gmail = customer.Gmail;
+                customerToUpdate.Email = customer.Email;
                 customerToUpdate.Phone_number = customer.Phone_number;
-                customerToUpdate.Experience_point = customer.Experience_point;
-                customerToUpdate.Level = customer.Level;
-                customerToUpdate.User_id = customer.User_id; // Ensure User_id matches for relational integrity
+                customerToUpdate.Experience = customer.Experience;
+                customerToUpdate.Username = customer.Username; // Ensure User_id matches for relational integrity
 
                 db.Entry(customerToUpdate).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
@@ -61,7 +56,7 @@ namespace QLTP.BLL
 
             using (QLTP_Entities db = new QLTP_Entities())
             {
-                var customerToDelete = db.Customer.FirstOrDefault(n => n.Customer_id == customer_id);
+                var customerToDelete = db.Customer.FirstOrDefault(n => n.Cus_id == customer_id);
 
                 if (customerToDelete == null)
                     return -2; // Error: customer not found
@@ -88,16 +83,17 @@ namespace QLTP.BLL
 
             using (QLTP_Entities db = new QLTP_Entities())
             {
-                return db.Customer.FirstOrDefault(n => n.Customer_id == customer_id);
+                return db.Customer.FirstOrDefault(n => n.Cus_id == customer_id);
             }
         }
-
         public List<string> Customer_get_all_user_ids()
         {
             using (QLTP_Entities db = new QLTP_Entities())
             {
-                return db.Account.Select(a => a.User_id).Distinct().ToList(); // Retrieves distinct User_ids
+                // Retrieves distinct Customer_ids from the Customer table
+                return db.Customer.Select(c => c.Cus_id).Distinct().ToList();
             }
         }
+
     }
 }

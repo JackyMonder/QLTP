@@ -4,7 +4,6 @@ using System.Linq;
 using QLTP.DAL;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.Entity;
 
 
 namespace QLTP.BLL
@@ -78,14 +77,6 @@ namespace QLTP.BLL
             using (QLTP_Entities db = new QLTP_Entities())
             {
                 return db.Account.FirstOrDefault(n => n.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
-            }
-        }
-
-        public List<string> Account_get_all_user_ids()
-        {
-            using (QLTP_Entities db = new QLTP_Entities())
-            {
-                return db.Account.Select(a => a.User_id).Distinct().ToList(); // Retrieves distinct User_ids
             }
         }
     }

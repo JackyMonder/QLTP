@@ -64,7 +64,7 @@ namespace QLTP.BLL
         }
 
         // New method to update rank
-        public void UpdateRank(string currentRankId, string newRankId, string newRankName)
+        /*public void UpdateRank(string currentRankId, string newRankId, string newRankName)
         {
             string query = "UPDATE RankTable SET Rank_id = @newRankId, Rank_name = @newRankName WHERE Rank_id = @currentRankId;";
 
@@ -94,6 +94,6 @@ namespace QLTP.BLL
                     }
                 }
             }
-        }
+        }*/
     }
 }

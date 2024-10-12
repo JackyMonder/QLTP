@@ -5,7 +5,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CC6461C3-CA6C-46C6-A12E-72B316AD0DE9}</ProjectGuid>
+    <ProjectGuid>{06D63C17-DF16-4AFE-BCB7-2FF0D62EB3D1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>QLTP.DAL</RootNamespace>
@@ -53,37 +53,74 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MetaData\Account.cs" />
+    <Compile Include="Account.cs">
+      <DependentUpon>QLTP_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Bill.cs">
+      <DependentUpon>QLTP_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Bill_detail.cs">
+      <DependentUpon>QLTP_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Customer.cs">
+      <DependentUpon>QLTP_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Discount_by_Rank.cs">
+      <DependentUpon>QLTP_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Employee.cs">
+      <DependentUpon>QLTP_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product.cs">
+      <DependentUpon>QLTP_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product_type.cs">
+      <DependentUpon>QLTP_Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
+    <Compile Include="QLTP_Model.Context.cs">
       <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QLTP_Model.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="QLTP_Model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QLTP_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="QLTP_Model.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>QLTP_Model.xsd</DependentUpon>
+      <DependentUpon>QLTP_Model.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Rank.cs">
+      <DependentUpon>QLTP_Model.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="QLTP_Model.xsc">
-      <DependentUpon>QLTP_Model.xsd</DependentUpon>
-    </None>
-    <None Include="QLTP_Model.xsd">
-      <Generator>MSDataSetGenerator</Generator>
+    <EntityDeploy Include="QLTP_Model.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>QLTP_Model.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="packages.config" />
+    <None Include="QLTP_Model.edmx.diagram">
+      <DependentUpon>QLTP_Model.edmx</DependentUpon>
     </None>
-    <None Include="QLTP_Model.xss">
-      <DependentUpon>QLTP_Model.xsd</DependentUpon>
-    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="QLTP_Model.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>QLTP_Model.Context.cs</LastGenOutput>
+      <DependentUpon>QLTP_Model.edmx</DependentUpon>
+    </Content>
+    <Content Include="QLTP_Model.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>QLTP_Model.edmx</DependentUpon>
+      <LastGenOutput>QLTP_Model.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

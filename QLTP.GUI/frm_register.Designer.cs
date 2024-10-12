@@ -48,6 +48,9 @@
             this.txt_address = new System.Windows.Forms.TextBox();
             this.btn_confirm = new System.Windows.Forms.Button();
             this.btn_cancel = new System.Windows.Forms.Button();
+            this.rdo_nam = new System.Windows.Forms.RadioButton();
+            this.rdo_nu = new System.Windows.Forms.RadioButton();
+            this.label11 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -232,12 +235,53 @@
             this.btn_cancel.UseVisualStyleBackColor = false;
             this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
             // 
+            // rdo_nam
+            // 
+            this.rdo_nam.AutoSize = true;
+            this.rdo_nam.BackColor = System.Drawing.Color.Transparent;
+            this.rdo_nam.Checked = true;
+            this.rdo_nam.ForeColor = System.Drawing.SystemColors.ActiveCaption;
+            this.rdo_nam.Location = new System.Drawing.Point(202, 441);
+            this.rdo_nam.Name = "rdo_nam";
+            this.rdo_nam.Size = new System.Drawing.Size(87, 29);
+            this.rdo_nam.TabIndex = 38;
+            this.rdo_nam.TabStop = true;
+            this.rdo_nam.Text = "Nam";
+            this.rdo_nam.UseVisualStyleBackColor = false;
+            // 
+            // rdo_nu
+            // 
+            this.rdo_nu.AutoSize = true;
+            this.rdo_nu.BackColor = System.Drawing.Color.Transparent;
+            this.rdo_nu.ForeColor = System.Drawing.SystemColors.ActiveCaption;
+            this.rdo_nu.Location = new System.Drawing.Point(331, 441);
+            this.rdo_nu.Name = "rdo_nu";
+            this.rdo_nu.Size = new System.Drawing.Size(70, 29);
+            this.rdo_nu.TabIndex = 39;
+            this.rdo_nu.Text = "Nữ";
+            this.rdo_nu.UseVisualStyleBackColor = false;
+            // 
+            // label11
+            // 
+            this.label11.BackColor = System.Drawing.Color.Transparent;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.ForeColor = System.Drawing.SystemColors.ActiveCaption;
+            this.label11.Location = new System.Drawing.Point(57, 432);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(145, 45);
+            this.label11.TabIndex = 40;
+            this.label11.Text = "Giới tính";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // frm_register
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(957, 540);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.rdo_nu);
+            this.Controls.Add(this.rdo_nam);
             this.Controls.Add(this.btn_cancel);
             this.Controls.Add(this.btn_confirm);
             this.Controls.Add(this.txt_address);
@@ -285,5 +329,8 @@
         private System.Windows.Forms.TextBox txt_address;
         private System.Windows.Forms.Button btn_confirm;
         private System.Windows.Forms.Button btn_cancel;
+        private System.Windows.Forms.RadioButton rdo_nam;
+        private System.Windows.Forms.RadioButton rdo_nu;
+        private System.Windows.Forms.Label label11;
     }
 }
