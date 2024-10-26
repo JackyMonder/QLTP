@@ -42,7 +42,7 @@
           <Property Name="Username" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Rank_id" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Full_name" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Sex" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Sex" Type="nvarchar" MaxLength="20" />
           <Property Name="Phone_number" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Address" Type="nvarchar" MaxLength="200" Nullable="false" />
@@ -75,18 +75,28 @@
             <PropertyRef Name="Product_id" />
           </Key>
           <Property Name="Product_id" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="Product_type_id" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="Product_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Product_type_id" Type="int" Nullable="false" />
+          <Property Name="Product_name_id" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Sell_Price" Type="float" Nullable="false" />
           <Property Name="Expired_day" Type="datetime" Nullable="false" />
-          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" />
           <Property Name="On_discount" Type="bit" Nullable="false" />
+          <Property Name="Import_day" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Product_Item">
+          <Key>
+            <PropertyRef Name="Product_name_id" />
+            <PropertyRef Name="Product_type_id" />
+          </Key>
+          <Property Name="Product_name_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Product_name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Product_type_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Product_type">
           <Key>
             <PropertyRef Name="Product_type_id" />
           </Key>
-          <Property Name="Product_type_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Product_type_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Product_type_name" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="Rank">
@@ -216,6 +226,32 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Product_Item_Product_type">
+          <End Role="Product_type" Type="Self.Product_type" Multiplicity="1" />
+          <End Role="Product_Item" Type="Self.Product_Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product_type">
+              <PropertyRef Name="Product_type_id" />
+            </Principal>
+            <Dependent Role="Product_Item">
+              <PropertyRef Name="Product_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Product_Item">
+          <End Role="Product_Item" Type="Self.Product_Item" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product_Item">
+              <PropertyRef Name="Product_name_id" />
+              <PropertyRef Name="Product_type_id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="Product_name_id" />
+              <PropertyRef Name="Product_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="QLTP_ModelStoreContainer">
           <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Bill" EntityType="Self.Bill" Schema="dbo" store:Type="Tables" />
@@ -224,6 +260,7 @@
           <EntitySet Name="Discount_by_Rank" EntityType="Self.Discount_by_Rank" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product_Item" EntityType="Self.Product_Item" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product_type" EntityType="Self.Product_type" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Rank" EntityType="Self.Rank" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__Bill__Cus_id__5070F446" Association="Self.FK__Bill__Cus_id__5070F446">
@@ -264,6 +301,14 @@
           </AssociationSet>
           <AssociationSet Name="FK__Product__Product__571DF1D5" Association="Self.FK__Product__Product__571DF1D5">
             <End Role="Product_type" EntitySet="Product_type" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Item_Product_type" Association="Self.FK_Product_Item_Product_type">
+            <End Role="Product_type" EntitySet="Product_type" />
+            <End Role="Product_Item" EntitySet="Product_Item" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Product_Item" Association="Self.FK_Product_Product_Item">
+            <End Role="Product_Item" EntitySet="Product_Item" />
             <End Role="Product" EntitySet="Product" />
           </AssociationSet>
         </EntityContainer>
@@ -317,7 +362,7 @@
           <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Rank_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Full_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Sex" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Sex" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Phone_number" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
@@ -357,22 +402,36 @@
             <PropertyRef Name="Product_id" />
           </Key>
           <Property Name="Product_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Product_type_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Product_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Product_type_id" Type="Int32" Nullable="false" />
+          <Property Name="Product_name_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Sell_Price" Type="Double" Nullable="false" />
           <Property Name="Expired_day" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" />
           <Property Name="On_discount" Type="Boolean" Nullable="false" />
+          <Property Name="Import_day" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Bill_detail" Relationship="Self.FK__Bill_deta__Produ__5629CD9C" FromRole="Product" ToRole="Bill_detail" />
           <NavigationProperty Name="Product_type" Relationship="Self.FK__Product__Product__571DF1D5" FromRole="Product" ToRole="Product_type" />
+          <NavigationProperty Name="Product_Item" Relationship="Self.FK_Product_Product_Item" FromRole="Product" ToRole="Product_Item" />
+        </EntityType>
+        <EntityType Name="Product_Item">
+          <Key>
+            <PropertyRef Name="Product_name_id" />
+            <PropertyRef Name="Product_type_id" />
+          </Key>
+          <Property Name="Product_name_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Product_name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Product_type_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_Product_Product_Item" FromRole="Product_Item" ToRole="Product" />
+          <NavigationProperty Name="Product_type" Relationship="Self.FK_Product_Item_Product_type" FromRole="Product_Item" ToRole="Product_type" />
         </EntityType>
         <EntityType Name="Product_type">
           <Key>
             <PropertyRef Name="Product_type_id" />
           </Key>
-          <Property Name="Product_type_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Product_type_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Product_type_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Product" Relationship="Self.FK__Product__Product__571DF1D5" FromRole="Product_type" ToRole="Product" />
+          <NavigationProperty Name="Product_Item" Relationship="Self.FK_Product_Item_Product_type" FromRole="Product_type" ToRole="Product_Item" />
         </EntityType>
         <EntityType Name="Rank">
           <Key>
@@ -503,6 +562,32 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Product_Product_Item">
+          <End Role="Product_Item" Type="Self.Product_Item" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product_Item">
+              <PropertyRef Name="Product_name_id" />
+              <PropertyRef Name="Product_type_id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="Product_name_id" />
+              <PropertyRef Name="Product_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Item_Product_type">
+          <End Role="Product_type" Type="Self.Product_type" Multiplicity="1" />
+          <End Role="Product_Item" Type="Self.Product_Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product_type">
+              <PropertyRef Name="Product_type_id" />
+            </Principal>
+            <Dependent Role="Product_Item">
+              <PropertyRef Name="Product_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="QLTP_Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Account" EntityType="Self.Account" />
           <EntitySet Name="Bill" EntityType="Self.Bill" />
@@ -511,6 +596,7 @@
           <EntitySet Name="Discount_by_Rank" EntityType="Self.Discount_by_Rank" />
           <EntitySet Name="Employee" EntityType="Self.Employee" />
           <EntitySet Name="Product" EntityType="Self.Product" />
+          <EntitySet Name="Product_Item" EntityType="Self.Product_Item" />
           <EntitySet Name="Product_type" EntityType="Self.Product_type" />
           <EntitySet Name="Rank" EntityType="Self.Rank" />
           <AssociationSet Name="FK__Customer__Userna__4F7CD00D" Association="Self.FK__Customer__Userna__4F7CD00D">
@@ -552,6 +638,14 @@
           <AssociationSet Name="FK__Product__Product__571DF1D5" Association="Self.FK__Product__Product__571DF1D5">
             <End Role="Product_type" EntitySet="Product_type" />
             <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Product_Item" Association="Self.FK_Product_Product_Item">
+            <End Role="Product_Item" EntitySet="Product_Item" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Item_Product_type" Association="Self.FK_Product_Item_Product_type">
+            <End Role="Product_type" EntitySet="Product_type" />
+            <End Role="Product_Item" EntitySet="Product_Item" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -635,11 +729,21 @@
               <MappingFragment StoreEntitySet="Product">
                 <ScalarProperty Name="Product_id" ColumnName="Product_id" />
                 <ScalarProperty Name="Product_type_id" ColumnName="Product_type_id" />
-                <ScalarProperty Name="Product_name" ColumnName="Product_name" />
+                <ScalarProperty Name="Product_name_id" ColumnName="Product_name_id" />
                 <ScalarProperty Name="Sell_Price" ColumnName="Sell_Price" />
                 <ScalarProperty Name="Expired_day" ColumnName="Expired_day" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="On_discount" ColumnName="On_discount" />
+                <ScalarProperty Name="Import_day" ColumnName="Import_day" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product_Item">
+            <EntityTypeMapping TypeName="QLTP_Model.Product_Item">
+              <MappingFragment StoreEntitySet="Product_Item">
+                <ScalarProperty Name="Product_name_id" ColumnName="Product_name_id" />
+                <ScalarProperty Name="Product_name" ColumnName="Product_name" />
+                <ScalarProperty Name="Product_type_id" ColumnName="Product_type_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
