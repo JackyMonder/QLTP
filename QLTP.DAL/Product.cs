@@ -21,15 +21,17 @@ namespace QLTP.DAL
         }
     
         public string Product_id { get; set; }
-        public string Product_type_id { get; set; }
-        public string Product_name { get; set; }
+        public int Product_type_id { get; set; }
+        public string Product_name_id { get; set; }
         public double Sell_Price { get; set; }
         public System.DateTime Expired_day { get; set; }
-        public int Quantity { get; set; }
+        public Nullable<int> Quantity { get; set; }
         public bool On_discount { get; set; }
+        public System.DateTime Import_day { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Bill_detail> Bill_detail { get; set; }
         public virtual Product_type Product_type { get; set; }
+        public virtual Product_Item Product_Item { get; set; }
     }
 }

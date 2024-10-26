@@ -193,6 +193,12 @@
     <Compile Include="frm_mainPage.Designer.cs">
       <DependentUpon>frm_mainPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="frm_managerProduct.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frm_managerProduct.Designer.cs">
+      <DependentUpon>frm_managerProduct.cs</DependentUpon>
+    </Compile>
     <Compile Include="frm_manager_mainPage.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -207,11 +213,20 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="frm_customer_mainPage.resx">
+      <DependentUpon>frm_customer_mainPage.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frm_login.resx">
       <DependentUpon>frm_login.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frm_mainPage.resx">
       <DependentUpon>frm_mainPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frm_managerProduct.resx">
+      <DependentUpon>frm_managerProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frm_manager_mainPage.resx">
+      <DependentUpon>frm_manager_mainPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frm_register.resx">
       <DependentUpon>frm_register.cs</DependentUpon>

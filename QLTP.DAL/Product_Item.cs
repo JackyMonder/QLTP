@@ -12,21 +12,20 @@ namespace QLTP.DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class Product_type
+    public partial class Product_Item
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Product_type()
+        public Product_Item()
         {
             this.Product = new HashSet<Product>();
-            this.Product_Item = new HashSet<Product_Item>();
         }
     
+        public string Product_name_id { get; set; }
+        public string Product_name { get; set; }
         public int Product_type_id { get; set; }
-        public string Product_type_name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Product> Product { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Product_Item> Product_Item { get; set; }
+        public virtual Product_type Product_type { get; set; }
     }
 }

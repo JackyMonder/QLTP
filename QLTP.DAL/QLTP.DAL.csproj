@@ -74,6 +74,9 @@
     <Compile Include="Product.cs">
       <DependentUpon>QLTP_Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Product_Item.cs">
+      <DependentUpon>QLTP_Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Product_type.cs">
       <DependentUpon>QLTP_Model.tt</DependentUpon>
     </Compile>
@@ -98,32 +101,30 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="packages.config" />
     <EntityDeploy Include="QLTP_Model.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>QLTP_Model.Designer.cs</LastGenOutput>
     </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.Config" />
-    <None Include="packages.config" />
     <None Include="QLTP_Model.edmx.diagram">
       <DependentUpon>QLTP_Model.edmx</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="QLTP_Model.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>QLTP_Model.Context.cs</LastGenOutput>
       <DependentUpon>QLTP_Model.edmx</DependentUpon>
+      <LastGenOutput>QLTP_Model.Context.cs</LastGenOutput>
     </Content>
     <Content Include="QLTP_Model.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>QLTP_Model.edmx</DependentUpon>
       <LastGenOutput>QLTP_Model.cs</LastGenOutput>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

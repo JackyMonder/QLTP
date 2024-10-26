@@ -25,6 +25,22 @@ namespace QLTP.GUI
             string address = txt_address.Text;
             string phoneNumber = txt_phoneNumber.Text;
 
+            // Khởi tạo biến sex với giá trị mặc định hoặc kiểm tra nếu không được chọn
+            string sex = "";
+            if (rdo_nam.Checked)
+            {
+                sex = "Nam";
+            }
+            else if (rdo_nu.Checked)
+            {
+                sex = "Nữ";
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn giới tính!");
+                return; // Kết thúc hàm, không tiếp tục thực hiện
+            }
+
             // Mặc định giá trị role của khách hàng là 2 (có thể là quyền hạn thấp nhất, ví dụ khách hàng)
             byte role = 2;
 
@@ -34,7 +50,6 @@ namespace QLTP.GUI
             // Lấy danh sách các ID hiện có để tránh trùng lặp
             List<string> existingCustomerIds = GetExistingCustomerIds();
 
-            // Kiểm tra xem Username đã tồn tại chưa
             Account_service accountService = new Account_service();
 
             if (string.IsNullOrWhiteSpace(username) ||
@@ -48,8 +63,8 @@ namespace QLTP.GUI
                 MessageBox.Show("Không được để trống thông tin!"); // Thông báo lỗi
                 return; // Kết thúc hàm, không tiếp tục thực hiện
             }
-            // Hàm kiểm tra nếu username đã tồn tại
-            // Sử dụng phương thức Account_search_unit để kiểm tra username
+
+            // Kiểm tra nếu username đã tồn tại
             if (accountService.Account_search_unit(username) != null)
             {
                 // Nếu username đã tồn tại, hiển thị thông báo và dừng xử lý
@@ -88,11 +103,12 @@ namespace QLTP.GUI
                     {
                         Cus_id = customerId,
                         Full_name = fullName,
+                        Sex = sex,
                         Address = address,
                         Email = gmail,
                         Phone_number = phoneNumber,
                         Experience = 0,   // Điểm kinh nghiệm mặc định = 0
-                        Username = username,    // Liên kết với User_id đã sinh trước đó
+                        Username = username,
                         Rank_id = "CP"          // Mặc định rank là CP (có thể là Customer thường)
                     };
 
@@ -144,6 +160,7 @@ namespace QLTP.GUI
                 }
             }
         }
+
 
         // Phương thức lấy danh sách ID đã tồn tại của Customer
         private List<string> GetExistingCustomerIds()

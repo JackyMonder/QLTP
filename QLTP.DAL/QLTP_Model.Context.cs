@@ -32,6 +32,7 @@ namespace QLTP.DAL
         public virtual DbSet<Discount_by_Rank> Discount_by_Rank { get; set; }
         public virtual DbSet<Employee> Employee { get; set; }
         public virtual DbSet<Product> Product { get; set; }
+        public virtual DbSet<Product_Item> Product_Item { get; set; }
         public virtual DbSet<Product_type> Product_type { get; set; }
         public virtual DbSet<Rank> Rank { get; set; }
     }
