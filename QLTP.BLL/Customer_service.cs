@@ -8,6 +8,7 @@ namespace QLTP.BLL
 {
     public class Customer_service
     {
+        public string Cus_Id { get; set; }
         public int Customer_add(Customer customer)
         {
             if (customer == null)
