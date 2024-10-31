@@ -15,37 +15,52 @@ namespace QLTP.GUI
     public partial class frm_customer_mainPage : Form
     {
         private readonly Customer_service _customerService;
-        private Customer customer;
-        private int CustomerId = 1; // Placeholder, use actual customer ID from your login
+        private Customer customer;  // Declare the customer object
+        //private string user; // Placeholder, use actual customer ID from your login
 
-        public frm_customer_mainPage()
+        public frm_customer_mainPage(string User)
         {
             InitializeComponent();
             _customerService = new Customer_service();
-            LoadCustomerData();
+            LoadCustomerData(User);
         }
 
-        private void LoadCustomerData()
+        private void LoadCustomerData(string User)
         {
             try
             {
-                List<Customer_service> listCustomer = _customerService.Customer_get_all_user_ids().Select(id => new Customer_service { Cus_Id = id }).ToList();
+                // Fetch and update customer data
+                customer = _customerService.GetCustomerByUsername(User);
 
-                fname.Text = customer.Full_name;
-                mail.Text = customer.Email;
-                ph_num.Text = customer.Phone_number;
-                sex.Text = customer.Sex;
-                address.Text = customer.Address;
-
-                //// Fetch and update points/ranking (replace with your BLL logic)
-                //int points = _customerService.GetCustomerPoints(CustomerId);
-                //ranking.Text = _customerService.GetCustomerRanking(points);
-                //progressBar1.Value = points;
+                if (customer != null)
+                {
+                    // Update form controls based on customer data
+                    fname.Text = customer.Cus_id;
+                    mail.Text = customer.Email;
+                    ph_num.Text = customer.Phone_number;
+                    sex.Text = customer.Sex;
+                    address.Text = customer.Address;
+                }
+                else
+                {
+                    MessageBox.Show("Customer not found", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi khi tải dữ liệu: " + ex.Message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error fetching customer IDs: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+
+            //// Fetch and update points/ranking (replace with your BLL logic)
+            //int points = _customerService.GetCustomerPoints(CustomerId);
+            //ranking.Text = _customerService.GetCustomerRanking(points);
+            //progressBar1.Value = points;
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show("Lỗi khi tải dữ liệu: " + ex.Message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //}
         }
 
         //private void button1_Click(object sender, EventArgs e)

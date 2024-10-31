@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Contexts;
+using System.Runtime.Remoting.Messaging;
+using Microsoft.Identity.Client;
 using QLTP.DAL;
 
 namespace QLTP.BLL
@@ -12,7 +14,7 @@ namespace QLTP.BLL
         public int Customer_add(Customer customer)
         {
             if (customer == null)
-                return -1; 
+                return -1;
 
             using (QLTP_Entities db = new QLTP_Entities())
             {
@@ -96,5 +98,17 @@ namespace QLTP.BLL
             }
         }
 
+        public Customer GetCustomerByUsername(string username)
+        {
+            if (string.IsNullOrEmpty(username))
+                return null; // Error: Invalid product_id
+
+            using (QLTP_Entities db = new QLTP_Entities())
+            {
+                return db.Customer.FirstOrDefault(p => p.Username == username); // Find product by product_id
+            }
+        }
+
     }
+
 }

@@ -4,26 +4,31 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="5d46b36dea3247dfbe63e83c687d07c5" Name="Diagram1" ZoomLevel="78">
-        <EntityTypeShape EntityType="QLTP_Model.Account" Width="1.5" PointX="0.75" PointY="10.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="QLTP_Model.Bill" Width="1.5" PointX="5.25" PointY="13.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="QLTP_Model.Bill_detail" Width="1.5" PointX="7.5" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="QLTP_Model.Customer" Width="1.5" PointX="3" PointY="11" IsExpanded="true" />
-        <EntityTypeShape EntityType="QLTP_Model.Discount_by_Rank" Width="1.5" PointX="5.25" PointY="18.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="QLTP_Model.Employee" Width="1.5" PointX="3" PointY="15.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="QLTP_Model.Product" Width="1.5" PointX="5.25" PointY="4.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="QLTP_Model.Product_Item" Width="1.5" PointX="3" PointY="7" IsExpanded="true" />
-        <EntityTypeShape EntityType="QLTP_Model.Product_type" Width="1.5" PointX="0.75" PointY="3.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="QLTP_Model.Rank" Width="1.5" PointX="0.75" PointY="13.125" IsExpanded="true" />
+      <Diagram DiagramId="ffd7b77c3f1946748565a8fc9e4ebe1d" Name="Diagram1">
+        <EntityTypeShape EntityType="QLTP_Model.Account" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Bill" Width="1.5" PointX="5.25" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Bill_detail" Width="1.5" PointX="7.5" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Customer" Width="1.5" PointX="3" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Discount_by_Rank" Width="1.5" PointX="5.25" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Employee" Width="1.5" PointX="3" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Product" Width="1.5" PointX="5.25" PointY="12.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Product_Item" Width="1.5" PointX="3" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Product_type" Width="1.5" PointX="3" PointY="14.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Rank" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
         <AssociationConnector Association="QLTP_Model.FK__Customer__Userna__4F7CD00D" ManuallyRouted="false" />
-        <AssociationConnector Association="QLTP_Model.FK__Employee__Userna__4E88ABD4" ManuallyRouted="false" />
+        <AssociationConnector Association="QLTP_Model.FK__Employee__Userna__5812160E" ManuallyRouted="false" />
+        <AssociationConnector Association="QLTP_Model.FK__Employee__Userna__693CA210" ManuallyRouted="false" />
         <AssociationConnector Association="QLTP_Model.FK__Bill__Cus_id__5070F446" ManuallyRouted="false" />
         <AssociationConnector Association="QLTP_Model.FK__Bill__Emp_id__5165187F" ManuallyRouted="false" />
+        <AssociationConnector Association="QLTP_Model.FK__Bill__Emp_id__656C112C" ManuallyRouted="false" />
         <AssociationConnector Association="QLTP_Model.FK__Bill_deta__Bill___52593CB8" ManuallyRouted="false" />
-        <AssociationConnector Association="QLTP_Model.FK__Bill_deta__Disco__5535A963" ManuallyRouted="false" />
+        <AssociationConnector Association="QLTP_Model.FK__Bill_deta__Bill___66603565" ManuallyRouted="false" />
+        <AssociationConnector Association="QLTP_Model.FK__Bill_deta__Disco__534D60F1" ManuallyRouted="false" />
+        <AssociationConnector Association="QLTP_Model.FK__Bill_deta__Disco__6754599E" ManuallyRouted="false" />
         <AssociationConnector Association="QLTP_Model.FK__Bill_deta__Produ__5629CD9C" ManuallyRouted="false" />
         <AssociationConnector Association="QLTP_Model.FK__Customer__Rank_i__534D60F1" ManuallyRouted="false" />
-        <AssociationConnector Association="QLTP_Model.FK__Discount___Rank___5441852A" ManuallyRouted="false" />
+        <AssociationConnector Association="QLTP_Model.FK__Discount___Rank___571DF1D5" ManuallyRouted="false" />
+        <AssociationConnector Association="QLTP_Model.FK__Discount___Rank___68487DD7" ManuallyRouted="false" />
         <AssociationConnector Association="QLTP_Model.FK__Product__Product__571DF1D5" ManuallyRouted="false" />
         <AssociationConnector Association="QLTP_Model.FK_Product_Product_Item" ManuallyRouted="false" />
         <AssociationConnector Association="QLTP_Model.FK_Product_Item_Product_type" ManuallyRouted="false" />

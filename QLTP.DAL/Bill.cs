@@ -18,6 +18,7 @@ namespace QLTP.DAL
         public Bill()
         {
             this.Bill_detail = new HashSet<Bill_detail>();
+            this.Bill_detail1 = new HashSet<Bill_detail>();
         }
     
         public string Bill_id { get; set; }
@@ -28,7 +29,10 @@ namespace QLTP.DAL
     
         public virtual Customer Customer { get; set; }
         public virtual Employee Employee { get; set; }
+        public virtual Employee Employee1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Bill_detail> Bill_detail { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Bill_detail> Bill_detail1 { get; set; }
     }
 }

@@ -19,6 +19,7 @@ namespace QLTP.DAL
         {
             this.Customer = new HashSet<Customer>();
             this.Employee = new HashSet<Employee>();
+            this.Employee1 = new HashSet<Employee>();
         }
     
         public string Username { get; set; }
@@ -29,5 +30,7 @@ namespace QLTP.DAL
         public virtual ICollection<Customer> Customer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Employee> Employee { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Employee> Employee1 { get; set; }
     }
 }
