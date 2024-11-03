@@ -1,27 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-<<<<<<< HEAD
-using System.Runtime.Remoting.Contexts;
-using System.Runtime.Remoting.Messaging;
-using Microsoft.Identity.Client;
-=======
->>>>>>> Thêm 1 số service ở các bảng sau:
 using QLTP.DAL;
 
 namespace QLTP.BLL
 {
     public class Customer_service
     {
-        public string Cus_Id { get; set; }
         public int Customer_add(Customer customer)
         {
             if (customer == null)
-<<<<<<< HEAD
-                return -1;
-=======
                 return -1; // Error: null customer object
->>>>>>> Thêm 1 số service ở các bảng sau:
 
             using (QLTP_Entities db = new QLTP_Entities())
             {
@@ -115,19 +104,6 @@ namespace QLTP.BLL
             }
         }
 
-<<<<<<< HEAD
-        public Customer GetCustomerByUsername(string username)
-        {
-            if (string.IsNullOrEmpty(username))
-                return null; // Error: Invalid product_id
-
-            using (QLTP_Entities db = new QLTP_Entities())
-            {
-                return db.Customer.FirstOrDefault(p => p.Username == username); // Find product by product_id
-            }
-        }
-
-=======
         // Updated to take the database context as an argument
         public string GenerateNewCustomerId()
         {
@@ -165,7 +141,5 @@ namespace QLTP.BLL
                     .ToList();
             }
         }
->>>>>>> Thêm 1 số service ở các bảng sau:
     }
-
 }

@@ -14,16 +14,6 @@ namespace QLTP.DAL
     
     public partial class Bill
     {
-<<<<<<< HEAD
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Bill()
-        {
-            this.Bill_detail = new HashSet<Bill_detail>();
-            this.Bill_detail1 = new HashSet<Bill_detail>();
-        }
-    
-=======
->>>>>>> Thêm 1 số service ở các bảng sau:
         public string Bill_id { get; set; }
         public string Cus_id { get; set; }
         public string Emp_id { get; set; }
@@ -32,14 +22,6 @@ namespace QLTP.DAL
     
         public virtual Customer Customer { get; set; }
         public virtual Employee Employee { get; set; }
-<<<<<<< HEAD
-        public virtual Employee Employee1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Bill_detail> Bill_detail { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Bill_detail> Bill_detail1 { get; set; }
-=======
         public virtual Bill_detail Bill_detail { get; set; }
->>>>>>> Thêm 1 số service ở các bảng sau:
     }
 }

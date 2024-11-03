@@ -18,7 +18,6 @@ namespace QLTP.DAL
         public Employee()
         {
             this.Bill = new HashSet<Bill>();
-            this.Bill1 = new HashSet<Bill>();
         }
     
         public string Emp_id { get; set; }
@@ -32,10 +31,7 @@ namespace QLTP.DAL
         public double Salary { get; set; }
     
         public virtual Account Account { get; set; }
-        public virtual Account Account1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Bill> Bill { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Bill> Bill1 { get; set; }
     }
 }
