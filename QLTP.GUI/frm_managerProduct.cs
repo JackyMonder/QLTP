@@ -1,8 +1,12 @@
-﻿using QLTP.BLL; // Assuming you have a BLL layer for services
+﻿using QLTP.BLL;
 using QLTP.DAL;
+
+//using QLTP.DAL;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace QLTP.GUI
@@ -26,17 +30,14 @@ namespace QLTP.GUI
             try
             {
                 // Load Product Types and Products using services
-                List<Product_type> listProductType = _productTypeService.GetAllProductTypes();
-                List<Product> listProduct = _productService.GetAllProducts();
-
-                FillDataCBB(listProductType); // Fill ComboBox with Product Types
-                FillDataDGV(listProduct);      // Fill DataGridView with Products
+                FillProductTypeCBB(); // Fill ComboBox with Product Types
+                FillDataDGV(); // Load Products into DataGridView
 
                 // Initially load product names based on the first product type
-                if (listProductType.Count > 0)
+                if (cbo_LoaiSP.Items.Count > 0)
                 {
                     cbo_LoaiSP.SelectedIndex = 0; // Select first item
-                    LoadProductNames((int)cbo_LoaiSP.SelectedValue); // Load corresponding product names
+                    FillProductNameCBB((int)cbo_LoaiSP.SelectedValue); // Load corresponding product names
                 }
             }
             catch (Exception ex)
@@ -45,37 +46,37 @@ namespace QLTP.GUI
             }
         }
 
-        private void FillDataDGV(List<Product> listProduct)
+        private void FillDataDGV()
         {
+            // Update the discount state in the database before displaying
+            _productService.UpdateOnDiscountState();
+
             dgv_quanLySanPham.Rows.Clear(); // Clear existing rows in DataGridView
+
+            var listProduct = _productService.GetAllProducts();
 
             foreach (var product in listProduct)
             {
                 int RowNew = dgv_quanLySanPham.Rows.Add();
-                dgv_quanLySanPham.Rows[RowNew].Cells[0].Value = product.Product_id; // Mã SP
-                dgv_quanLySanPham.Rows[RowNew].Cells[1].Value = _productItemService.GetProductItemName(product.Product_name_id); // Tên SP
-                dgv_quanLySanPham.Rows[RowNew].Cells[2].Value = _productTypeService.GetProductTypeName(product.Product_type_id); // Loại SP
-                dgv_quanLySanPham.Rows[RowNew].Cells[3].Value = product.Quantity; // Số lượng
+                dgv_quanLySanPham.Rows[RowNew].Cells["colMaSP"].Value = product.Product_id; // Mã SP
+                dgv_quanLySanPham.Rows[RowNew].Cells["colTenSP"].Value = _productItemService.GetProductItemName(product.Product_name_id); // Tên SP
+                dgv_quanLySanPham.Rows[RowNew].Cells["colLoaiSP"].Value = _productTypeService.GetProductTypeName(product.Product_type_id); // Loại SP
+                dgv_quanLySanPham.Rows[RowNew].Cells["colSL"].Value = product.Quantity; // Số lượng
 
-                // Determine if the product is on discount based on expiration
-                product.On_discount = (product.Expired_day - DateTime.Now).TotalDays < 3;
+                // Calculate the display price based on the `On_discount` status
+                double displayPrice = product.On_discount ? product.Sell_Price * 0.9 : product.Sell_Price;
+                dgv_quanLySanPham.Rows[RowNew].Cells["colGiaBan"].Value = displayPrice; // Update displayed price
 
-                // Update price if discount is applicable
-                double displayPrice = product.Sell_Price;
+                dgv_quanLySanPham.Rows[RowNew].Cells["colHSD"].Value = product.Expired_day.ToString("yyyy-MM-dd"); // Ngày hết hạn
 
-                if (product.On_discount)
-                {
-                    displayPrice *= 0.9; // Apply 10% discount
-                }
-
-                dgv_quanLySanPham.Rows[RowNew].Cells[4].Value = displayPrice; // Update displayed price
-                dgv_quanLySanPham.Rows[RowNew].Cells[5].Value = product.Expired_day.ToString("yyyy-MM-dd"); // Ngày hết hạn
-                dgv_quanLySanPham.Rows[RowNew].Cells[6].Value = product.On_discount; // Set checkbox based on On_discount property
+                // Set checkbox based on On_discount state
+                dgv_quanLySanPham.Rows[RowNew].Cells["colGiamGia"].Value = product.On_discount;
             }
         }
 
-        private void FillDataCBB(List<Product_type> listProductType)
+        private void FillProductTypeCBB()
         {
+            var listProductType = _productTypeService.GetAllProductTypes(); // Call service directly
             cbo_LoaiSP.DataSource = listProductType;
             cbo_LoaiSP.DisplayMember = "Product_type_name";
             cbo_LoaiSP.ValueMember = "Product_type_id";
@@ -86,13 +87,13 @@ namespace QLTP.GUI
         {
             if (cbo_LoaiSP.SelectedValue is int selectedTypeId)
             {
-                LoadProductNames(selectedTypeId); // Load product names based on selected type
+                FillProductNameCBB(selectedTypeId); // Load product names based on selected type
             }
         }
 
-        private void LoadProductNames(int productTypeId)
+        private void FillProductNameCBB(int productTypeId)
         {
-            List<Product_Item> productNames = _productItemService.GetProductItemsByTypeId(productTypeId);
+            var productNames = _productItemService.GetProductItemsByTypeId(productTypeId); // Call service directly
             cbo_TenSP.DataSource = productNames;
             cbo_TenSP.DisplayMember = "Product_name";
             cbo_TenSP.ValueMember = "Product_name_id";
@@ -104,12 +105,7 @@ namespace QLTP.GUI
             txt_GiaBan.Clear();
             cbo_LoaiSP.SelectedIndex = -1; // Reset combo box
             cbo_TenSP.SelectedIndex = -1; // Reset product name combo box
-        }
-
-        private void loadDGV()
-        {
-            List<Product> newList = _productService.GetAllProducts();
-            FillDataDGV(newList);
+            txt_MaSP.Clear();
         }
 
         private bool CheckDataInput()
@@ -144,185 +140,278 @@ namespace QLTP.GUI
             for (int i = 0; i < length; i++)
             {
                 if (dgv_quanLySanPham.Rows[i].Cells[0].Value != null)
+                {
                     if (dgv_quanLySanPham.Rows[i].Cells[0].Value.ToString() == IDProduct)
                         return i;
+                }
             }
             return -1; // Product not found
         }
 
         private void btn_Them_Click(object sender, EventArgs e)
         {
-            if (CheckDataInput())
+            // Check if the input data is valid
+            if (!CheckDataInput())
             {
-                string productId = $"{cbo_TenSP.SelectedValue}{DateTime.Now.ToString("ddMMyyyyHHmmss")}"; // Keep this line as it is
+                return; // Exit if validation fails
+            }
 
-                if (CheckIdProduct(productId) == -1) // New product
+            // Generate a unique Product ID
+            string productId = $"{cbo_TenSP.SelectedValue}{DateTime.Now:ddMMyyyyHHmmss}";
+
+            // Check if the product already exists
+            if (CheckIdProduct(productId) != -1)
+            {
+                MessageBox.Show("Sản phẩm đã tồn tại!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return; // Exit if the product already exists
+            }
+
+            // Validate the selected product from the dropdown
+            if (cbo_TenSP.SelectedValue == null)
+            {
+                MessageBox.Show("Bạn chưa chọn sản phẩm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Exit if no product is selected
+            }
+
+            // Retrieve selected product item
+            var selectedItemName = _productItemService.GetProductItemById(cbo_TenSP.SelectedValue.ToString());
+            if (selectedItemName == null)
+            {
+                MessageBox.Show("Không tìm thấy sản phẩm đã chọn!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Exit if the selected item is not found
+            }
+
+            // Validate input fields
+            if (!int.TryParse(txt_SL.Text, out int quantity) || quantity < 0)
+            {
+                MessageBox.Show("Số lượng không hợp lệ!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Exit if quantity is invalid
+            }
+
+            if (!double.TryParse(txt_GiaBan.Text, out double sellPrice) || sellPrice < 0)
+            {
+                MessageBox.Show("Giá bán không hợp lệ!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Exit if sell price is invalid
+            }
+
+            // Validate selected product type
+            if (cbo_LoaiSP.SelectedValue == null)
+            {
+                MessageBox.Show("Bạn chưa chọn loại sản phẩm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Exit if no product type is selected
+            }
+
+            // Try to convert the selected value to an integer
+            if (!int.TryParse(cbo_LoaiSP.SelectedValue.ToString(), out int productTypeId))
+            {
+                MessageBox.Show("Loại sản phẩm không hợp lệ!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Exit if the selected value cannot be converted to an integer
+            }
+
+            // Create a new product object
+            Product productToAdd = new Product
+            {
+                Product_id = productId,
+                Product_name_id = selectedItemName.Product_name_id,
+                Product_type_id = productTypeId,
+                Quantity = quantity,
+                Sell_Price = sellPrice,
+                Expired_day = dtpHSD.Value,
+                Import_day = DateTime.Now, // Set Import day to current time
+                On_discount = false // Default value, set based on business logic
+            };
+
+            try
+            {
+                // Call the service method to add the product
+                int result = _productService.Product_add(productToAdd);
+
+                // Check if the product was added successfully
+                if (result == 0)
                 {
-                    try
-                    {
-                        Product sp = new Product(); // Create new product
-                        sp.Product_id = productId; // Use generated Product_id
-
-                        if (cbo_TenSP.SelectedItem is Product_Item selectedItem)
-                        {
-                            sp.Product_name_id = selectedItem.Product_name_id; // Extract Product_name_id from the Product_Item
-                        }
-                        else
-                        {
-                            MessageBox.Show("Không tìm thấy sản phẩm đã chọn!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            return;
-                        }
-
-                        sp.Quantity = Convert.ToInt32(txt_SL.Text);
-                        sp.Sell_Price = Convert.ToDouble(txt_GiaBan.Text);
-                        sp.Expired_day = dtpHSD.Value;
-                        sp.Import_day = DateTime.Now; // Set Import_day to current time
-                        sp.On_discount = false; // Default value
-
-                        if (cbo_LoaiSP.SelectedValue is int productTypeId)
-                        {
-                            sp.Product_type_id = productTypeId; // Assign Product_type_id
-                        }
-                        else
-                        {
-                            MessageBox.Show("Bạn chưa chọn loại sản phẩm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            return;
-                        }
-
-                        _productService.Product_add(sp); // Use service to add product
-                        loadDGV();
-                        loadForm();
-                        MessageBox.Show("Thêm mới dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Lỗi khi thêm sản phẩm: " + ex.ToString(), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                    MessageBox.Show("Thêm sản phẩm thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    FillDataDGV(); // Reload the DataGridView
+                    loadForm(); // Reset input fields
                 }
                 else
                 {
-                    MessageBox.Show("Sản phẩm đã tồn tại!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Thêm sản phẩm thất bại!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi: " + ex.Message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void btn_Sua_Click(object sender, EventArgs e)
         {
-            if (CheckDataInput())
+            // Get the product ID from txt_MaSP
+            string selectedProductId = txt_MaSP.Text.Trim();
+
+            // Validate the product ID
+            if (string.IsNullOrEmpty(selectedProductId))
             {
-                Product sp = _productService.GetProductById(txt_MaSP.Text);
-                if (sp != null)
+                MessageBox.Show("Mã sản phẩm không được để trống!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Exit if product ID is empty
+            }
+
+            // Check if the input data is valid
+            if (!CheckDataInput())
+            {
+                return; // Exit if validation fails
+            }
+
+            // Retrieve selected product item and validate
+            var selectedItemName = _productItemService.GetProductItemById(cbo_TenSP.SelectedValue.ToString());
+            if (selectedItemName == null)
+            {
+                MessageBox.Show("Không tìm thấy sản phẩm đã chọn!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Exit if the selected item is not found
+            }
+
+            try
+            {
+                // Validate quantity and price inputs
+                if (!int.TryParse(txt_SL.Text, out int quantity) || quantity < 0)
                 {
-                    if (cbo_TenSP.SelectedItem is Product_Item selectedItem)
-                    {
-                        sp.Product_name_id = selectedItem.Product_name_id; // Extract Product_name_id from the Product_Item
-                    }
-                    else
-                    {
-                        MessageBox.Show("Không tìm thấy sản phẩm đã chọn!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
+                    MessageBox.Show("Số lượng không hợp lệ!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return; // Exit if quantity is invalid
+                }
 
-                    sp.Quantity = Convert.ToInt32(txt_SL.Text);
-                    sp.Sell_Price = Convert.ToDouble(txt_GiaBan.Text);
-                    sp.Expired_day = dtpHSD.Value;
-                    sp.On_discount = false; // Default value
+                if (!double.TryParse(txt_GiaBan.Text, out double sellPrice) || sellPrice < 0)
+                {
+                    MessageBox.Show("Giá bán không hợp lệ!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return; // Exit if sell price is invalid
+                }
 
-                    if (cbo_LoaiSP.SelectedValue is int productTypeId)
-                    {
-                        sp.Product_type_id = productTypeId; // Assign Product_type_id
-                    }
-                    else
-                    {
-                        MessageBox.Show("Bạn chưa chọn loại sản phẩm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
+                // Validate selected product type
+                if (cbo_LoaiSP.SelectedValue == null)
+                {
+                    MessageBox.Show("Bạn chưa chọn loại sản phẩm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return; // Exit if no product type is selected
+                }
 
-                    _productService.Product_update(sp); // Use service to update product
-                    loadDGV();
-                    loadForm();
-                    MessageBox.Show("Sửa đổi dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // Try to convert the selected value to an integer
+                if (!int.TryParse(cbo_LoaiSP.SelectedValue.ToString(), out int productTypeId))
+                {
+                    MessageBox.Show("Loại sản phẩm không hợp lệ!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return; // Exit if the selected value cannot be converted to an integer
+                }
+
+                // Create a product object for updating
+                Product productToUpdate = new Product
+                {
+                    Product_id = selectedProductId,
+                    Product_name_id = selectedItemName.Product_name_id,
+                    Product_type_id = productTypeId,
+                    Quantity = quantity,
+                    Sell_Price = sellPrice,
+                    Expired_day = dtpHSD.Value,
+                    Import_day = DateTime.Now // Set Import day to current time
+                };
+
+                // Call the service method to update the product
+                int result = _productService.Product_update(productToUpdate);
+
+                // Check if the product was updated successfully
+                if (result == 0)
+                {
+                    MessageBox.Show("Cập nhật sản phẩm thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    FillDataDGV(); // Reload the DataGridView
+                    loadForm(); // Reset input fields
                 }
                 else
                 {
-                    MessageBox.Show("Không tìm thấy sản phẩm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Cập nhật sản phẩm thất bại!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-        }
-
-        private void dgv_quanLySanPham_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0)
+            catch (Exception ex)
             {
-                txt_MaSP.Text = dgv_quanLySanPham.Rows[e.RowIndex].Cells[0].Value.ToString(); // Set the ID
-                cbo_TenSP.SelectedValue = _productService.GetProductById(txt_MaSP.Text)?.Product_name_id; // Set Product name based on ID
-                txt_SL.Text = dgv_quanLySanPham.Rows[e.RowIndex].Cells[3].Value.ToString(); // Set Quantity
-                txt_GiaBan.Text = dgv_quanLySanPham.Rows[e.RowIndex].Cells[4].Value.ToString(); // Set Sell Price
-                dtpHSD.Value = DateTime.Parse(dgv_quanLySanPham.Rows[e.RowIndex].Cells[5].Value.ToString()); // Set Expiration Date
+                MessageBox.Show("Lỗi: " + ex.Message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void btn_Xoa_Click(object sender, EventArgs e)
         {
-            // Assuming you have a TextBox named txt_ProductID to input the product ID to delete
-            string productId = txt_MaSP.Text.Trim(); // Get the product ID from the input
+            // Get the product ID from txt_MaSP
+            string selectedProductId = txt_MaSP.Text.Trim();
 
-            if (string.IsNullOrEmpty(productId))
+            // Validate the product ID
+            if (string.IsNullOrEmpty(selectedProductId))
             {
-                MessageBox.Show("Please enter a valid Product ID.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                MessageBox.Show("Mã sản phẩm không được để trống!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Exit if product ID is empty
             }
 
-            Product_service productService = new Product_service();
-            int result = productService.Product_delete(productId);
-
-            switch (result)
+            // Confirm deletion
+            DialogResult confirmResult = MessageBox.Show("Bạn có chắc chắn muốn xóa sản phẩm này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (confirmResult != DialogResult.Yes)
             {
-                case 0:
-                    MessageBox.Show("Product deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    txt_MaSP.Text = string.Empty;
-                    loadDGV(); 
-                    break;
-                case -1:
-                    MessageBox.Show("Invalid Product ID.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    break;
-                case -2:
-                    MessageBox.Show("Product not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    break;
-                default:
-                    MessageBox.Show("An unexpected error occurred.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    break;
+                return; // Exit if not confirmed
+            }
+
+            try
+            {
+                // Call the service method to delete the product
+                int result = _productService.Product_delete(selectedProductId);
+
+                // Check if the product was deleted successfully
+                if (result == 0)
+                {
+                    MessageBox.Show("Xóa sản phẩm thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    FillDataDGV(); // Reload the DataGridView
+                    loadForm(); // Reset input fields
+                }
+                else
+                {
+                    MessageBox.Show("Xóa sản phẩm thất bại! Sản phẩm không tồn tại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi: " + ex.Message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void dgv_quanLySanPham_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            // Only proceed if a valid row is clicked
             if (e.RowIndex >= 0)
             {
-                // Set the ID of the selected product
-                txt_MaSP.Text = dgv_quanLySanPham.Rows[e.RowIndex].Cells[0].Value.ToString();
-
-                // Get the selected product
-                Product sp = _productService.GetProductById(txt_MaSP.Text);
-
-                if (sp != null)
+                // Check if the clicked column is colTenSP, colMaSP, or colLoaiSP
+                if (dgv_quanLySanPham.Columns[e.ColumnIndex].Name == "colTenSP" ||
+                    dgv_quanLySanPham.Columns[e.ColumnIndex].Name == "colMaSP" ||
+                    dgv_quanLySanPham.Columns[e.ColumnIndex].Name == "colLoaiSP")
                 {
-                    // Set the product type in the cbo_LoaiSP ComboBox
-                    cbo_LoaiSP.SelectedValue = sp.Product_type_id; // Set Product Type based on ID
+                    // Set the ID of the selected product
+                    txt_MaSP.Text = dgv_quanLySanPham.Rows[e.RowIndex].Cells["colMaSP"].Value.ToString();
 
-                    // Set the product name in the cbo_TenSP ComboBox
-                    cbo_TenSP.SelectedValue = sp.Product_name_id; // Set Product name based on ID
+                    // Get the selected product from the service
+                    Product sp = _productService.GetProductById(txt_MaSP.Text);
 
-                    // Set other details
-                    txt_SL.Text = dgv_quanLySanPham.Rows[e.RowIndex].Cells[3].Value.ToString(); // Set Quantity
-                    txt_GiaBan.Text = dgv_quanLySanPham.Rows[e.RowIndex].Cells[4].Value.ToString(); // Set Sell Price
-                    dtpHSD.Value = DateTime.Parse(dgv_quanLySanPham.Rows[e.RowIndex].Cells[5].Value.ToString()); // Set Expiration Date
+                    if (sp != null)
+                    {
+                        // Set the product type in the cbo_LoaiSP ComboBox
+                        cbo_LoaiSP.SelectedValue = sp.Product_type_id; // Set Product Type based on ID
+
+                        // Set the product name in the cbo_TenSP ComboBox
+                        cbo_TenSP.SelectedValue = sp.Product_name_id; // Set Product Name based on ID
+
+                        // Set other details
+                        txt_SL.Text = dgv_quanLySanPham.Rows[e.RowIndex].Cells["colSL"].Value.ToString(); // Set Quantity
+                        txt_GiaBan.Text = dgv_quanLySanPham.Rows[e.RowIndex].Cells["colGiaBan"].Value.ToString(); // Set Sell Price
+                        dtpHSD.Value = DateTime.Parse(dgv_quanLySanPham.Rows[e.RowIndex].Cells["colHSD"].Value.ToString()); // Set Expiration Date
+                    }
                 }
             }
         }
 
         private void btn_Dong_Click(object sender, EventArgs e)
         {
+            this.Hide();
+            frm_manager_mainPage frm = new frm_manager_mainPage();
+            frm.ShowDialog();
             this.Close();
         }
 
@@ -333,17 +422,42 @@ namespace QLTP.GUI
 
         private void thêmMặtHàngToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
+            this.Hide();
+            frm_managerAddItems frm = new frm_managerAddItems();
+            frm.ShowDialog();
+            frm.Close();
         }
 
-        private void txtTimTenSP_KeyPress(object sender, KeyPressEventArgs e)
+        private void txtTimTenSP_TextChanged(object sender, EventArgs e)
         {
+            string searchTerm = txtTimTenSP.Text.Trim();
 
-        }
+            // Call the product item service to get product items matching the search term
+            var filteredProductItems = _productItemService.SearchProductsByName(searchTerm);
 
-        private void FilterProducts()
-        {
+            // Clear existing rows
+            dgv_quanLySanPham.Rows.Clear();
 
+            // Loop through the filtered product items to get corresponding products
+            foreach (var productItem in filteredProductItems)
+            {
+                // Find the product associated with the product item
+                var product = _productService.GetAllProducts().FirstOrDefault(p => p.Product_name_id == productItem.Product_name_id);
+
+                if (product != null) // Ensure the product exists
+                {
+                    int rowNew = dgv_quanLySanPham.Rows.Add();
+                    dgv_quanLySanPham.Rows[rowNew].Cells["colMaSP"].Value = product.Product_id;
+                    dgv_quanLySanPham.Rows[rowNew].Cells["colTenSP"].Value = productItem.Product_name; // Set the product name from Product_Item
+                    dgv_quanLySanPham.Rows[rowNew].Cells["colLoaiSP"].Value = _productTypeService.GetProductTypeName(product.Product_type_id);
+                    dgv_quanLySanPham.Rows[rowNew].Cells["colSL"].Value = product.Quantity;
+                    dgv_quanLySanPham.Rows[rowNew].Cells["colGiaBan"].Value = product.Sell_Price;
+                    dgv_quanLySanPham.Rows[rowNew].Cells["colHSD"].Value = product.Expired_day.ToString("dd/MM/yyyy");
+
+                    // Set the checkbox state based on the On_discount property
+                    dgv_quanLySanPham.Rows[rowNew].Cells["colGiamGia"].Value = product.On_discount; // true for checked, false for unchecked
+                }
+            }
         }
     }
 }

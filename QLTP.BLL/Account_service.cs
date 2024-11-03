@@ -79,5 +79,16 @@ namespace QLTP.BLL
                 return db.Account.FirstOrDefault(n => n.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
             }
         }
+
+        public bool IsUsernameAvailable(string username)
+        {
+            if (string.IsNullOrEmpty(username))
+                return false; // Username is invalid
+
+            using (QLTP_Entities db = new QLTP_Entities())
+            {
+                return !db.Account.Any(n => n.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+            }
+        }
     }
 }

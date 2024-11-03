@@ -1,5 +1,4 @@
 ﻿using QLTP.BLL;
-using QLTP.DAL;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

@@ -73,7 +73,8 @@ namespace QLTP.BLL
         {
             using (QLTP_Entities db = new QLTP_Entities())
             {
-                return db.Product.ToList(); // Return all products
+                // Sử dụng Include để nạp trước các thuộc tính liên quan
+                return db.Product.Include(p => p.Product_Item).ToList();
             }
         }
 
@@ -99,6 +100,35 @@ namespace QLTP.BLL
                 .ToList();
 
             return filteredProducts;
+        }
+
+        public int UpdateOnDiscountState()
+        {
+            using (QLTP_Entities db = new QLTP_Entities())
+            {
+                var products = db.Product.ToList(); // Retrieve all products from the database
+
+                foreach (var product in products)
+                {
+                    bool withinDiscountPeriod = (product.Expired_day - DateTime.Now).TotalDays < 3;
+
+                    // Apply discount logic based on `On_discount` and expiration conditions
+                    if (!product.On_discount && withinDiscountPeriod)
+                    {
+                        product.On_discount = true;
+                        product.Sell_Price *= 0.9; // Apply 10% discount
+                    }
+                    else if (product.On_discount && !withinDiscountPeriod)
+                    {
+                        product.On_discount = false;
+                        product.Sell_Price /= 0.9; // Restore to original price if discount is no longer applicable
+                    }
+
+                    db.Entry(product).State = EntityState.Modified; // Mark as modified for update
+                }
+
+                return db.SaveChanges(); // Save changes and return the number of affected rows
+            }
         }
     }
 }

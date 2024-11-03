@@ -9,14 +9,19 @@ namespace QLTP.GUI
 {
     public partial class frm_register : Form
     {
+        private Account_service accountService; // Changed from Account_service to AccountService
+        private Customer_service customerService; // Changed from Customer_service to CustomerService
+
         public frm_register()
         {
             InitializeComponent();
+            accountService = new Account_service(); // Initialize the service
+            customerService = new Customer_service(); // Initialize the service
         }
 
         private void btn_confirm_Click(object sender, EventArgs e)
         {
-            // Lấy dữ liệu từ các textbox
+            // Retrieve data from text boxes
             string username = txt_username.Text;
             string password = txt_password.Text;
             string passwordConfirm = txt_confirmPassword.Text;
@@ -25,33 +30,18 @@ namespace QLTP.GUI
             string address = txt_address.Text;
             string phoneNumber = txt_phoneNumber.Text;
 
-            // Khởi tạo biến sex với giá trị mặc định hoặc kiểm tra nếu không được chọn
-            string sex = "";
-            if (rdo_nam.Checked)
-            {
-                sex = "Nam";
-            }
-            else if (rdo_nu.Checked)
-            {
-                sex = "Nữ";
-            }
-            else
+            // Default sex value or check if not selected
+            string sex = rdo_nam.Checked ? "Nam" : rdo_nu.Checked ? "Nữ" : string.Empty;
+            if (string.IsNullOrEmpty(sex))
             {
                 MessageBox.Show("Vui lòng chọn giới tính!");
-                return; // Kết thúc hàm, không tiếp tục thực hiện
+                return; // Exit the method if sex is not selected
             }
 
-            // Mặc định giá trị role của khách hàng là 2 (có thể là quyền hạn thấp nhất, ví dụ khách hàng)
+            // Default role for customer
             byte role = 2;
 
-            // Prefix để sinh ID cho Account và Customer
-            string customerIdPrefix = "CTM_";      // Ví dụ: CTM_ là prefix cho Customer ID
-
-            // Lấy danh sách các ID hiện có để tránh trùng lặp
-            List<string> existingCustomerIds = GetExistingCustomerIds();
-
-            Account_service accountService = new Account_service();
-
+            // Validate input information
             if (string.IsNullOrWhiteSpace(username) ||
                 string.IsNullOrWhiteSpace(password) ||
                 string.IsNullOrWhiteSpace(passwordConfirm) ||
@@ -60,46 +50,43 @@ namespace QLTP.GUI
                 string.IsNullOrWhiteSpace(address) ||
                 string.IsNullOrWhiteSpace(phoneNumber))
             {
-                MessageBox.Show("Không được để trống thông tin!"); // Thông báo lỗi
-                return; // Kết thúc hàm, không tiếp tục thực hiện
+                MessageBox.Show("Không được để trống thông tin!"); // Show error message
+                return; // Exit the method if input is invalid
             }
 
-            // Kiểm tra nếu username đã tồn tại
-            if (accountService.Account_search_unit(username) != null)
+            // Check if username is available through BLL
+            if (!accountService.IsUsernameAvailable(username))
             {
-                // Nếu username đã tồn tại, hiển thị thông báo và dừng xử lý
                 MessageBox.Show("Tên đăng nhập đã tồn tại! Vui lòng chọn Username khác.");
-                return; // Kết thúc hàm, không tiếp tục thực hiện
+                return; // Exit the method if username is not available
             }
 
+            // Check if passwords match
             if (password != passwordConfirm)
             {
-                // Hiển thị thông báo nếu mật khẩu không khớp
                 MessageBox.Show("Mật khẩu và xác nhận mật khẩu không khớp! Vui lòng nhập lại.");
-                return; // Kết thúc hàm, không tiếp tục thực hiện
+                return; // Exit the method if passwords do not match
             }
-
-            // Tạo thực thể mới cho Account, chuẩn bị lưu vào cơ sở dữ liệu
-            Account Account_new = new Account
-            {
-                Username = username,
-                Password = password,
-                Role = role // Role mặc định là 2
-            };
 
             try
             {
-                // Thêm tài khoản mới vào bảng Account
-                int accountResult = accountService.Account_add(Account_new);
+                Account newAccount = new Account
+                {
+                    Username = username,
+                    Password = password,
+                    Role = role // Default role is 2
+                };
 
-                // Nếu việc thêm tài khoản thành công (accountResult == 0)
+                // Add new account to Account table through BLL
+                var accountResult = accountService.Account_add(newAccount);
+
                 if (accountResult == 0)
                 {
-                    // Sinh ra customer_id mới từ prefix và danh sách ID hiện có
-                    string customerId = GenerateNextId(customerIdPrefix, existingCustomerIds);
+                    // Generate new customer_id from BLL
+                    string customerId = customerService.GenerateNewCustomerId();
 
-                    // Tạo thực thể mới cho Customer, chuẩn bị lưu vào cơ sở dữ liệu
-                    Customer Customer_new = new Customer
+                    // Create a new Customer entity to save in the database
+                    Customer newCustomer = new Customer
                     {
                         Cus_id = customerId,
                         Full_name = fullName,
@@ -107,22 +94,20 @@ namespace QLTP.GUI
                         Address = address,
                         Email = gmail,
                         Phone_number = phoneNumber,
-                        Experience = 0,   // Điểm kinh nghiệm mặc định = 0
+                        Experience = 0,   // Default experience point = 0
                         Username = username,
-                        Rank_id = "CP"          // Mặc định rank là CP (có thể là Customer thường)
+                        Rank_id = "CP"    // Default rank is CP
                     };
 
-                    Customer_service customerService = new Customer_service();
-                    // Thêm khách hàng mới vào bảng Customer
-                    int customerResult = customerService.Customer_add(Customer_new);
+                    // Add new customer to Customer table through BLL
+                    var customerResult = customerService.Customer_add(newCustomer);
 
-                    // Kiểm tra kết quả thêm customer
                     if (customerResult == 0)
                     {
-                        // Nếu thành công, thông báo đăng ký tài khoản thành công
+                        // If successful, notify account registration success
                         MessageBox.Show("Đăng ký tài khoản thành công!");
 
-                        // Ẩn form đăng ký và hiển thị form chính
+                        // Hide register form and show main form
                         this.Hide();
                         frm_mainPage frm = new frm_mainPage();
                         frm.ShowDialog();
@@ -130,71 +115,43 @@ namespace QLTP.GUI
                     }
                     else
                     {
-                        // Nếu có lỗi khi thêm khách hàng, hiển thị thông báo lỗi
+                        // If there is an error adding customer, show error message
                         MessageBox.Show("Lỗi trong lúc lưu trữ dữ liệu khách hàng!");
                     }
                 }
                 else
                 {
-                    // Kiểm tra nếu tài khoản bị trùng username
-                    if (accountResult == -2)
-                    {
-                        MessageBox.Show("Tên đăng nhập đã tồn tại! Vui lòng thay đổi Username.");
-                    }
-                    else
-                    {
-                        // Nếu có lỗi khác trong quá trình lưu tài khoản
-                        MessageBox.Show("Lỗi trong lúc lưu trữ dữ liệu tài khoản!");
-                    }
+                    // Handle errors in adding account
+                    HandleAccountAddError(accountResult);
                 }
             }
-            catch (System.Data.Entity.Validation.DbEntityValidationException ex)
+            catch (Exception ex) // Catch general exceptions
             {
-                // Bắt lỗi và hiển thị thông báo chi tiết về lỗi validation trong cơ sở dữ liệu
-                foreach (var validationErrors in ex.EntityValidationErrors)
-                {
-                    foreach (var validationError in validationErrors.ValidationErrors)
-                    {
-                        MessageBox.Show($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}");
-                    }
-                }
+                MessageBox.Show($"Lỗi trong quá trình đăng ký: {ex.Message}");
             }
         }
 
-
-        // Phương thức lấy danh sách ID đã tồn tại của Customer
-        private List<string> GetExistingCustomerIds()
+        // Handle error when adding account
+        private void HandleAccountAddError(int accountResult)
         {
-            Customer_service customerService = new Customer_service();
-            return customerService.Customer_get_all_user_ids(); // Trả về danh sách các Customer_id hiện có
+            switch (accountResult)
+            {
+                case -2:
+                    MessageBox.Show("Tên đăng nhập đã tồn tại! Vui lòng thay đổi Username.");
+                    break;
+                default:
+                    MessageBox.Show("Lỗi trong lúc lưu trữ dữ liệu tài khoản!");
+                    break;
+            }
         }
 
-        // Phương thức tự động sinh ID mới không trùng lặp
-        private string GenerateNextId(string prefix, List<string> existingIds)
-        {
-            // Lọc ra các ID có cùng prefix và lấy phần số phía sau
-            var filteredIds = existingIds
-                .Where(id => id.StartsWith(prefix))
-                .Select(id => int.Parse(id.Substring(prefix.Length))) // Chỉ lấy phần số sau prefix
-                .ToList();
-
-            // Tìm số ID lớn nhất hiện tại và tăng thêm 1, nếu chưa có ID thì bắt đầu từ 1
-            int newIdNumber = filteredIds.Count > 0 ? filteredIds.Max() + 1 : 1;
-
-            // Format số ID thành 4 chữ số (VD: 0001, 0002)
-            string formattedNumber = newIdNumber.ToString("D4");
-
-            // Trả về ID mới với prefix và số vừa sinh ra
-            return $"{prefix}{formattedNumber}";
-        }
-
-        // Event khi nhấn nút hủy
+        // Event when cancel button is clicked
         private void btn_cancel_Click(object sender, EventArgs e)
         {
-            this.Hide(); // Ẩn form đăng ký
-            frm_mainPage frm = new frm_mainPage(); // Mở form chính
+            this.Hide(); // Hide registration form
+            frm_mainPage frm = new frm_mainPage(); // Open main form
             frm.ShowDialog();
-            this.Close(); // Đóng form đăng ký
+            this.Close(); // Close registration form
         }
     }
 }

@@ -18,7 +18,7 @@ namespace QLTP.DAL
         public string Product_id { get; set; }
         public string Discount_id { get; set; }
         public int Amount { get; set; }
-        public double Total_price { get; set; }
+        public double Price { get; set; }
     
         public virtual Bill Bill { get; set; }
         public virtual Bill Bill1 { get; set; }

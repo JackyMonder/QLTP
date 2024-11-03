@@ -193,6 +193,18 @@
     <Compile Include="frm_mainPage.Designer.cs">
       <DependentUpon>frm_mainPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="frm_managerAddItems.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frm_managerAddItems.Designer.cs">
+      <DependentUpon>frm_managerAddItems.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frm_managerCustomer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frm_managerCustomer.Designer.cs">
+      <DependentUpon>frm_managerCustomer.cs</DependentUpon>
+    </Compile>
     <Compile Include="frm_managerProduct.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -221,6 +233,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frm_mainPage.resx">
       <DependentUpon>frm_mainPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frm_managerAddItems.resx">
+      <DependentUpon>frm_managerAddItems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frm_managerCustomer.resx">
+      <DependentUpon>frm_managerCustomer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frm_managerProduct.resx">
       <DependentUpon>frm_managerProduct.cs</DependentUpon>

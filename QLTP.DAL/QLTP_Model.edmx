@@ -20,19 +20,18 @@
           <Property Name="Bill_id" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Cus_id" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Emp_id" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="Product_id" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Create_date" Type="datetime" Nullable="false" />
+          <Property Name="Total_Price" Type="float" />
         </EntityType>
         <EntityType Name="Bill_detail">
           <Key>
             <PropertyRef Name="Bill_id" />
-            <PropertyRef Name="Product_id" />
           </Key>
           <Property Name="Bill_id" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Product_id" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Discount_id" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Amount" Type="int" Nullable="false" />
-          <Property Name="Total_price" Type="float" Nullable="false" />
+          <Property Name="Price" Type="float" Nullable="false" />
         </EntityType>
         <EntityType Name="Customer">
           <Key>
@@ -144,7 +143,7 @@
         </Association>
         <Association Name="FK__Bill_deta__Bill___52593CB8">
           <End Role="Bill" Type="Self.Bill" Multiplicity="1" />
-          <End Role="Bill_detail" Type="Self.Bill_detail" Multiplicity="*" />
+          <End Role="Bill_detail" Type="Self.Bill_detail" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Bill">
               <PropertyRef Name="Bill_id" />
@@ -415,8 +414,8 @@
           <Property Name="Bill_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Cus_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Emp_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Product_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Create_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Total_Price" Type="Double" />
           <NavigationProperty Name="Customer" Relationship="Self.FK__Bill__Cus_id__5070F446" FromRole="Bill" ToRole="Customer" />
           <NavigationProperty Name="Employee" Relationship="Self.FK__Bill__Emp_id__5165187F" FromRole="Bill" ToRole="Employee" />
           <NavigationProperty Name="Employee1" Relationship="Self.FK__Bill__Emp_id__656C112C" FromRole="Bill" ToRole="Employee" />
@@ -426,13 +425,12 @@
         <EntityType Name="Bill_detail">
           <Key>
             <PropertyRef Name="Bill_id" />
-            <PropertyRef Name="Product_id" />
           </Key>
           <Property Name="Bill_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Product_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Discount_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Amount" Type="Int32" Nullable="false" />
-          <Property Name="Total_price" Type="Double" Nullable="false" />
+          <Property Name="Price" Type="Double" Nullable="false" />
           <NavigationProperty Name="Bill" Relationship="Self.FK__Bill_deta__Bill___52593CB8" FromRole="Bill_detail" ToRole="Bill" />
           <NavigationProperty Name="Bill1" Relationship="Self.FK__Bill_deta__Bill___66603565" FromRole="Bill_detail" ToRole="Bill" />
           <NavigationProperty Name="Discount_by_Rank" Relationship="Self.FK__Bill_deta__Disco__534D60F1" FromRole="Bill_detail" ToRole="Discount_by_Rank" />
@@ -606,7 +604,7 @@
         </Association>
         <Association Name="FK__Bill_deta__Bill___52593CB8">
           <End Role="Bill" Type="Self.Bill" Multiplicity="1" />
-          <End Role="Bill_detail" Type="Self.Bill_detail" Multiplicity="*" />
+          <End Role="Bill_detail" Type="Self.Bill_detail" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Bill">
               <PropertyRef Name="Bill_id" />
@@ -839,8 +837,8 @@
                 <ScalarProperty Name="Bill_id" ColumnName="Bill_id" />
                 <ScalarProperty Name="Cus_id" ColumnName="Cus_id" />
                 <ScalarProperty Name="Emp_id" ColumnName="Emp_id" />
-                <ScalarProperty Name="Product_id" ColumnName="Product_id" />
                 <ScalarProperty Name="Create_date" ColumnName="Create_date" />
+                <ScalarProperty Name="Total_Price" ColumnName="Total_Price" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -851,7 +849,7 @@
                 <ScalarProperty Name="Product_id" ColumnName="Product_id" />
                 <ScalarProperty Name="Discount_id" ColumnName="Discount_id" />
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="Total_price" ColumnName="Total_price" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

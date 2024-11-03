@@ -27,11 +27,15 @@ namespace QLTP.GUI
 
         private void quảnLýKháchHàngToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            this.Hide();
+            frm_managerCustomer frm = new frm_managerCustomer();
+            frm.ShowDialog();
+            this.Close();
         }
 
         private void quảnLýSảnPhẩmToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            this.Hide();
             frm_managerProduct frm = new frm_managerProduct();
             frm.ShowDialog();
             this.Close();   

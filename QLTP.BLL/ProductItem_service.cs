@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
+using System.Text;
 
 namespace QLTP.BLL
 {
@@ -97,6 +99,16 @@ namespace QLTP.BLL
                 return db.Product_Item
                          .Where(p => p.Product_type_id == product_type_id)
                          .ToList(); // Return the list of product items
+            }
+        }
+
+        public List<Product_Item> SearchProductsByName(string searchTerm)
+        {
+            using (QLTP_Entities db = new QLTP_Entities())
+            {
+                return db.Product_Item
+                    .Where(c => c.Product_name.Contains(searchTerm)) // Adjust the logic as necessary
+                    .ToList();
             }
         }
     }

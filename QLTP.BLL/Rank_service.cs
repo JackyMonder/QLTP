@@ -1,99 +1,139 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
+using System.Linq;
+using QLTP.DAL;
 
 namespace QLTP.BLL
 {
-    public enum RankType // Renamed from Rank to RankType
+    public enum RankType
     {
         CP,  // Coupon
-        BRZ, // Đồng (Bronze)
-        SLV, // Bạc (Silver)
-        GLD, // Vàng (Gold)
-        PLT, // Bạch kim (Platinum)
-        DIA  // Kim cương (Diamond)
+        BRZ, // Bronze
+        SLV, // Silver
+        GLD, // Gold
+        PLT, // Platinum
+        DIA  // Diamond
     }
 
-    internal class RankService
+    public class Rank_service
     {
-        private readonly string _connectionString;
-
-        public RankService(string connectionString)
+        // Method to add a new rank to the database
+        private static readonly Dictionary<RankType, string> RankNames = new Dictionary<RankType, string>
         {
-            _connectionString = connectionString;
+            { RankType.CP, "Coupon" },
+            { RankType.BRZ, "Đồng" },
+            { RankType.SLV, "Bạc" },
+            { RankType.GLD, "Vàng" },
+            { RankType.PLT, "Bạch Kim" },
+            { RankType.DIA, "Kim Cương" },
+        };
+
+        public int Rank_add(Rank rank)
+        {
+            if (rank == null) return -1; // Error: null rank object
+
+            using (QLTP_Entities db = new QLTP_Entities())
+            {
+                if (db.Rank.Any(r => r.Rank_id == rank.Rank_id))
+                    return -2; // Error: rank ID already exists
+
+                db.Rank.Add(rank);
+                db.SaveChanges();
+                return 0; // Successful operation
+            }
         }
 
-        // Existing methods
+        // Method to update an existing rank in the database
+        public int Rank_update(Rank rank)
+        {
+            if (rank == null) return -1; // Error: null rank object
 
+            using (QLTP_Entities db = new QLTP_Entities())
+            {
+                var rankToUpdate = db.Rank.FirstOrDefault(r => r.Rank_id == rank.Rank_id);
+                if (rankToUpdate == null)
+                    return -2; // Error: rank not found
+
+                rankToUpdate.Rank_name = rank.Rank_name;
+
+                db.Entry(rankToUpdate).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+                return 0; // Successful operation
+            }
+        }
+
+        // Method to delete a rank by Rank_id
+        public int Rank_delete(string rankId)
+        {
+            if (String.IsNullOrEmpty(rankId)) return -1; // Error: null or empty rank ID
+
+            using (QLTP_Entities db = new QLTP_Entities())
+            {
+                var rankToDelete = db.Rank.FirstOrDefault(r => r.Rank_id == rankId);
+                if (rankToDelete == null)
+                    return -2; // Error: rank not found
+
+                db.Rank.Remove(rankToDelete);
+                db.SaveChanges();
+                return 0; // Successful operation
+            }
+        }
+
+        // Method to get all ranks as a list
+        public List<Rank> Rank_search_all()
+        {
+            using (QLTP_Entities db = new QLTP_Entities())
+            {
+                return db.Rank.ToList();
+            }
+        }
+
+        // Method to get a single rank by Rank_id
+        public Rank Rank_search_unit(string rankId)
+        {
+            if (String.IsNullOrEmpty(rankId)) return null;
+
+            using (QLTP_Entities db = new QLTP_Entities())
+            {
+                return db.Rank.FirstOrDefault(r => r.Rank_id == rankId);
+            }
+        }
+
+        // Method to get the name of a rank from its Rank_id
         public string GetRankName(string rankId)
         {
-            if (!Enum.IsDefined(typeof(RankType), rankId))
+            if (Enum.TryParse(rankId, true, out RankType rank))
             {
-                throw new ArgumentOutOfRangeException(nameof(rankId), "Invalid rank ID.");
+                // Return the mapped name from the dictionary
+                return RankNames.TryGetValue(rank, out var rankName) ? rankName : rank.ToString();
             }
-            return rankId.ToString();
+
+            throw new ArgumentOutOfRangeException(nameof(rankId), "Invalid rank ID.");
         }
 
+
+        // Method to get the Rank_id from its name
         public string GetRankId(string rankName)
         {
             if (Enum.TryParse(rankName, true, out RankType rank))
             {
                 return rank.ToString();
             }
-            else
-            {
-                throw new ArgumentException("Invalid rank name.", nameof(rankName));
-            }
+            throw new ArgumentException("Invalid rank name.", nameof(rankName));
         }
 
+        // Method to get the next rank based on current Rank_id
         public RankType? GetNextRank(string currentRankId)
         {
-            if (!Enum.IsDefined(typeof(RankType), currentRankId))
+            if (Enum.TryParse(currentRankId, true, out RankType currentRank))
             {
-                throw new ArgumentOutOfRangeException(nameof(currentRankId), "Invalid rank ID.");
-            }
-
-            RankType currentRank = (RankType)Enum.Parse(typeof(RankType), currentRankId);
-
-            if (currentRank < RankType.DIA)
-            {
-                return currentRank + 1;
-            }
-            return null; // No higher rank available
-        }
-
-        // New method to update rank
-        /*public void UpdateRank(string currentRankId, string newRankId, string newRankName)
-        {
-            string query = "UPDATE RankTable SET Rank_id = @newRankId, Rank_name = @newRankName WHERE Rank_id = @currentRankId;";
-
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                using (SqlCommand command = new SqlCommand(query, connection))
+                if (currentRank < RankType.DIA)
                 {
-                    // Define parameters
-                    command.Parameters.Add(new SqlParameter("@currentRankId", currentRankId));
-                    command.Parameters.Add(new SqlParameter("@newRankId", newRankId));
-                    command.Parameters.Add(new SqlParameter("@newRankName", newRankName));
-
-                    // Open the connection
-                    connection.Open();
-
-                    // Execute the update command
-                    int rowsAffected = command.ExecuteNonQuery();
-
-                    // Optionally, check how many rows were affected
-                    if (rowsAffected > 0)
-                    {
-                        Console.WriteLine("Rank updated successfully.");
-                    }
-                    else
-                    {
-                        Console.WriteLine("No rank found with the specified ID.");
-                    }
+                    return currentRank + 1;
                 }
+                return null; // No higher rank available
             }
-        }*/
+            throw new ArgumentOutOfRangeException(nameof(currentRankId), "Invalid rank ID.");
+        }
     }
 }
