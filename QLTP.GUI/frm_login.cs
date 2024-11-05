@@ -61,7 +61,7 @@ namespace QLTP.GUI
             else if (Account.Role == 2) //role 2 = khách hàng 
             {
                 this.Hide();
-                frm_customer_mainPage frm = new frm_customer_mainPage();
+                frm_customer_mainPage frm = new frm_customer_mainPage(username);
                 frm.ShowDialog();
                 this.Close();
             }

@@ -21,7 +21,9 @@ namespace QLTP.DAL
         public double Price { get; set; }
     
         public virtual Bill Bill { get; set; }
+        public virtual Bill Bill1 { get; set; }
         public virtual Discount_by_Rank Discount_by_Rank { get; set; }
+        public virtual Discount_by_Rank Discount_by_Rank1 { get; set; }
         public virtual Product Product { get; set; }
     }
 }

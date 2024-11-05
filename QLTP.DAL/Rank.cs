@@ -19,6 +19,7 @@ namespace QLTP.DAL
         {
             this.Customer = new HashSet<Customer>();
             this.Discount_by_Rank = new HashSet<Discount_by_Rank>();
+            this.Discount_by_Rank1 = new HashSet<Discount_by_Rank>();
         }
     
         public string Rank_id { get; set; }
@@ -28,5 +29,7 @@ namespace QLTP.DAL
         public virtual ICollection<Customer> Customer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Discount_by_Rank> Discount_by_Rank { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Discount_by_Rank> Discount_by_Rank1 { get; set; }
     }
 }
