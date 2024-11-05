@@ -55,13 +55,5 @@ namespace QLTP.GUI
         {
 
         }
-
-        private void quảnLýTàiKhoảnToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            frm_managerAccount frm = new frm_managerAccount();
-            frm.ShowDialog();
-            this.Close();
-        }
     }
 }

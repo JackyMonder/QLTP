@@ -18,25 +18,15 @@ namespace QLTP.DAL
         public Rank()
         {
             this.Customer = new HashSet<Customer>();
-<<<<<<< HEAD
-=======
             this.Discount_by_Rank = new HashSet<Discount_by_Rank>();
-            this.Discount_by_Rank1 = new HashSet<Discount_by_Rank>();
->>>>>>> parent of 81e688c (sửa 1 số service và 1 số frm)
         }
     
         public string Rank_id { get; set; }
         public string Rank_name { get; set; }
-        public double Discount_by_rank { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Customer> Customer { get; set; }
-<<<<<<< HEAD
-=======
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Discount_by_Rank> Discount_by_Rank { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Discount_by_Rank> Discount_by_Rank1 { get; set; }
->>>>>>> parent of 81e688c (sửa 1 số service và 1 số frm)
     }
 }

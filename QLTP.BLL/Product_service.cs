@@ -130,16 +130,5 @@ namespace QLTP.BLL
                 return db.SaveChanges(); // Save changes and return the number of affected rows
             }
         }
-
-        public Product GetProductByName(string productName)
-        {
-            using (QLTP_Entities db = new QLTP_Entities())
-            {
-                // Sử dụng Include để nạp trước Product_Item
-                var product = db.Product.Include(p => p.Product_Item)
-                    .FirstOrDefault(p => p.Product_Item.Product_name == productName);
-                return product;
-            }
-        }
     }
 }
