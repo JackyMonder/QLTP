@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+<<<<<<< HEAD:QLTP.DAL/QLTP_Entities.edmx.diagram
+      <Diagram DiagramId="4c22c766a8754060825494541b33194c" Name="Diagram1" ZoomLevel="39">
+        <EntityTypeShape EntityType="QLTP_Model.Account" Width="1.5" PointX="0.75" PointY="15" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Bill" Width="1.5" PointX="5.25" PointY="12.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Bill_detail" Width="1.5" PointX="7.5" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Customer" Width="1.5" PointX="3" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Employee" Width="1.5" PointX="3" PointY="14.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Product" Width="1.5" PointX="5.25" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Product_Item" Width="1.5" PointX="3" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Product_type" Width="1.5" PointX="0.75" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Rank" Width="1.5" PointX="0.75" PointY="11.125" IsExpanded="true" />
+        <AssociationConnector Association="QLTP_Model.FK__Customer__Userna__4F7CD00D" ManuallyRouted="false" />
+        <AssociationConnector Association="QLTP_Model.FK__Employee__Userna__534D60F1" ManuallyRouted="false" />
+        <AssociationConnector Association="QLTP_Model.FK__Employee__Userna__619B8048" ManuallyRouted="false" />
+=======
+<<<<<<< HEAD
+      <Diagram DiagramId="ffd7b77c3f1946748565a8fc9e4ebe1d" Name="Diagram1">
+        <EntityTypeShape EntityType="QLTP_Model.Account" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Bill" Width="1.5" PointX="5.25" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Bill_detail" Width="1.5" PointX="7.5" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Customer" Width="1.5" PointX="3" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Discount_by_Rank" Width="1.5" PointX="5.25" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Employee" Width="1.5" PointX="3" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Product" Width="1.5" PointX="5.25" PointY="12.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Product_Item" Width="1.5" PointX="3" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Product_type" Width="1.5" PointX="3" PointY="14.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Rank" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+=======
+      <Diagram DiagramId="6fd9b69aba664c11963ed8914553d44a" Name="Diagram1">
+        <EntityTypeShape EntityType="QLTP_Model.Account" Width="1.5" PointX="0.75" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Bill" Width="1.5" PointX="5.25" PointY="13.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Bill_detail" Width="1.5" PointX="7.5" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Customer" Width="1.5" PointX="3" PointY="11" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Discount_by_Rank" Width="1.5" PointX="5.25" PointY="18.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Employee" Width="1.5" PointX="3" PointY="15.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Product" Width="1.5" PointX="5.25" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Product_Item" Width="1.5" PointX="3" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Product_type" Width="1.5" PointX="0.75" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLTP_Model.Rank" Width="1.5" PointX="0.75" PointY="13.125" IsExpanded="true" />
+>>>>>>> Thêm 1 số service ở các bảng sau:
+        <AssociationConnector Association="QLTP_Model.FK__Customer__Userna__4F7CD00D" ManuallyRouted="false" />
+        <AssociationConnector Association="QLTP_Model.FK__Employee__Userna__5812160E" ManuallyRouted="false" />
+        <AssociationConnector Association="QLTP_Model.FK__Employee__Userna__693CA210" ManuallyRouted="false" />
+        <AssociationConnector Association="QLTP_Model.FK__Bill__Cus_id__5070F446" ManuallyRouted="false" />
+>>>>>>> parent of 81e688c (sửa 1 số service và 1 số frm):QLTP.DAL/QLTP_Model.edmx.diagram
+        <AssociationConnector Association="QLTP_Model.FK__Bill__Emp_id__5165187F" ManuallyRouted="false" />
+        <AssociationConnector Association="QLTP_Model.FK__Bill__Emp_id__656C112C" ManuallyRouted="false" />
+        <AssociationConnector Association="QLTP_Model.FK__Bill_deta__Bill___52593CB8" ManuallyRouted="false" />
+<<<<<<< HEAD:QLTP.DAL/QLTP_Entities.edmx.diagram
+        <AssociationConnector Association="QLTP_Model.FK_Bill_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="QLTP_Model.FK__Bill_deta__Produ__5629CD9C" ManuallyRouted="false" />
+        <AssociationConnector Association="QLTP_Model.FK__Customer__Rank_i__534D60F1" ManuallyRouted="false" />
+=======
+        <AssociationConnector Association="QLTP_Model.FK__Bill_deta__Bill___66603565" ManuallyRouted="false" />
+        <AssociationConnector Association="QLTP_Model.FK__Bill_deta__Disco__534D60F1" ManuallyRouted="false" />
+        <AssociationConnector Association="QLTP_Model.FK__Bill_deta__Disco__6754599E" ManuallyRouted="false" />
+        <AssociationConnector Association="QLTP_Model.FK__Bill_deta__Produ__5629CD9C" ManuallyRouted="false" />
+        <AssociationConnector Association="QLTP_Model.FK__Customer__Rank_i__534D60F1" ManuallyRouted="false" />
+        <AssociationConnector Association="QLTP_Model.FK__Discount___Rank___571DF1D5" ManuallyRouted="false" />
+        <AssociationConnector Association="QLTP_Model.FK__Discount___Rank___68487DD7" ManuallyRouted="false" />
+>>>>>>> parent of 81e688c (sửa 1 số service và 1 số frm):QLTP.DAL/QLTP_Model.edmx.diagram
+        <AssociationConnector Association="QLTP_Model.FK__Product__Product__571DF1D5" ManuallyRouted="false" />
+        <AssociationConnector Association="QLTP_Model.FK_Product_Product_Item" ManuallyRouted="false" />
+        <AssociationConnector Association="QLTP_Model.FK_Product_Item_Product_type" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

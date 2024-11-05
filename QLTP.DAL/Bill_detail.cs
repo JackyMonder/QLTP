@@ -16,12 +16,16 @@ namespace QLTP.DAL
     {
         public string Bill_id { get; set; }
         public string Product_id { get; set; }
-        public string Discount_id { get; set; }
         public int Amount { get; set; }
         public double Price { get; set; }
     
         public virtual Bill Bill { get; set; }
+<<<<<<< HEAD
+=======
+        public virtual Bill Bill1 { get; set; }
         public virtual Discount_by_Rank Discount_by_Rank { get; set; }
+        public virtual Discount_by_Rank Discount_by_Rank1 { get; set; }
+>>>>>>> parent of 81e688c (sửa 1 số service và 1 số frm)
         public virtual Product Product { get; set; }
     }
 }

@@ -90,5 +90,13 @@ namespace QLTP.BLL
                 return !db.Account.Any(n => n.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
             }
         }
+
+        public Account GetRole(byte role)
+        {
+            using (QLTP_Entities db = new QLTP_Entities())
+            {
+                return db.Account.FirstOrDefault(r => r.Role == role); // Find product by product_id
+            }
+        }
     }
 }

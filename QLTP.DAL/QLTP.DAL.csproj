@@ -54,76 +54,73 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs">
-      <DependentUpon>QLTP_Model.tt</DependentUpon>
+      <DependentUpon>QLTP_Entities.tt</DependentUpon>
     </Compile>
     <Compile Include="Bill.cs">
-      <DependentUpon>QLTP_Model.tt</DependentUpon>
+      <DependentUpon>QLTP_Entities.tt</DependentUpon>
     </Compile>
     <Compile Include="Bill_detail.cs">
-      <DependentUpon>QLTP_Model.tt</DependentUpon>
+      <DependentUpon>QLTP_Entities.tt</DependentUpon>
     </Compile>
     <Compile Include="Customer.cs">
-      <DependentUpon>QLTP_Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Discount_by_Rank.cs">
-      <DependentUpon>QLTP_Model.tt</DependentUpon>
+      <DependentUpon>QLTP_Entities.tt</DependentUpon>
     </Compile>
     <Compile Include="Employee.cs">
-      <DependentUpon>QLTP_Model.tt</DependentUpon>
+      <DependentUpon>QLTP_Entities.tt</DependentUpon>
     </Compile>
     <Compile Include="Product.cs">
-      <DependentUpon>QLTP_Model.tt</DependentUpon>
+      <DependentUpon>QLTP_Entities.tt</DependentUpon>
     </Compile>
     <Compile Include="Product_Item.cs">
-      <DependentUpon>QLTP_Model.tt</DependentUpon>
+      <DependentUpon>QLTP_Entities.tt</DependentUpon>
     </Compile>
     <Compile Include="Product_type.cs">
-      <DependentUpon>QLTP_Model.tt</DependentUpon>
+      <DependentUpon>QLTP_Entities.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QLTP_Model.Context.cs">
+    <Compile Include="QLTP_Entities.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>QLTP_Model.Context.tt</DependentUpon>
+      <DependentUpon>QLTP_Entities.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="QLTP_Model.cs">
+    <Compile Include="QLTP_Entities.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>QLTP_Model.tt</DependentUpon>
+      <DependentUpon>QLTP_Entities.tt</DependentUpon>
     </Compile>
-    <Compile Include="QLTP_Model.Designer.cs">
+    <Compile Include="QLTP_Entities.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>QLTP_Model.edmx</DependentUpon>
+      <DependentUpon>QLTP_Entities.edmx</DependentUpon>
     </Compile>
     <Compile Include="Rank.cs">
-      <DependentUpon>QLTP_Model.tt</DependentUpon>
+      <DependentUpon>QLTP_Entities.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
     <None Include="packages.config" />
-    <EntityDeploy Include="QLTP_Model.edmx">
+    <EntityDeploy Include="QLTP_Entities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>QLTP_Model.Designer.cs</LastGenOutput>
+      <LastGenOutput>QLTP_Entities.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="QLTP_Model.edmx.diagram">
-      <DependentUpon>QLTP_Model.edmx</DependentUpon>
+    <None Include="QLTP_Entities.edmx.diagram">
+      <DependentUpon>QLTP_Entities.edmx</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="QLTP_Model.Context.tt">
+    <Content Include="QLTP_Entities.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>QLTP_Model.edmx</DependentUpon>
-      <LastGenOutput>QLTP_Model.Context.cs</LastGenOutput>
+      <DependentUpon>QLTP_Entities.edmx</DependentUpon>
+      <LastGenOutput>QLTP_Entities.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="QLTP_Model.tt">
+    <Content Include="QLTP_Entities.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>QLTP_Model.edmx</DependentUpon>
-      <LastGenOutput>QLTP_Model.cs</LastGenOutput>
+      <DependentUpon>QLTP_Entities.edmx</DependentUpon>
+      <LastGenOutput>QLTP_Entities.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -22,6 +22,7 @@
           <Property Name="Emp_id" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Create_date" Type="datetime" Nullable="false" />
           <Property Name="Total_Price" Type="float" />
+          <Property Name="Rank_id" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="Bill_detail">
           <Key>
@@ -29,13 +30,13 @@
           </Key>
           <Property Name="Bill_id" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Product_id" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="Discount_id" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Amount" Type="int" Nullable="false" />
           <Property Name="Price" Type="float" Nullable="false" />
         </EntityType>
         <EntityType Name="Customer">
           <Key>
             <PropertyRef Name="Cus_id" />
+            <PropertyRef Name="Rank_id" />
           </Key>
           <Property Name="Cus_id" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Username" Type="varchar" MaxLength="100" Nullable="false" />
@@ -46,14 +47,6 @@
           <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Address" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="Experience" Type="float" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Discount_by_Rank">
-          <Key>
-            <PropertyRef Name="Discount_id" />
-          </Key>
-          <Property Name="Discount_id" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="Rank_id" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="Discount_percent" Type="float" Nullable="false" />
         </EntityType>
         <EntityType Name="Employee">
           <Key>
@@ -104,20 +97,21 @@
           </Key>
           <Property Name="Rank_id" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Rank_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Discount_by_rank" Type="float" Nullable="false" />
         </EntityType>
-        <Association Name="FK__Bill__Cus_id__5070F446">
-          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+        <Association Name="FK__Bill__Emp_id__5165187F">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
           <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Customer">
-              <PropertyRef Name="Cus_id" />
+            <Principal Role="Employee">
+              <PropertyRef Name="Emp_id" />
             </Principal>
             <Dependent Role="Bill">
-              <PropertyRef Name="Cus_id" />
+              <PropertyRef Name="Emp_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Bill__Emp_id__5165187F">
+        <Association Name="FK__Bill__Emp_id__656C112C">
           <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
           <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
           <ReferentialConstraint>
@@ -141,7 +135,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Bill_deta__Disco__5535A963">
+<<<<<<< HEAD:QLTP.DAL/QLTP_Entities.edmx
+=======
+        <Association Name="FK__Bill_deta__Bill___66603565">
+          <End Role="Bill" Type="Self.Bill" Multiplicity="1" />
+          <End Role="Bill_detail" Type="Self.Bill_detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bill">
+              <PropertyRef Name="Bill_id" />
+            </Principal>
+            <Dependent Role="Bill_detail">
+              <PropertyRef Name="Bill_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Bill_deta__Disco__534D60F1">
           <End Role="Discount_by_Rank" Type="Self.Discount_by_Rank" Multiplicity="1" />
           <End Role="Bill_detail" Type="Self.Bill_detail" Multiplicity="*" />
           <ReferentialConstraint>
@@ -153,6 +161,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Bill_deta__Disco__6754599E">
+          <End Role="Discount_by_Rank" Type="Self.Discount_by_Rank" Multiplicity="1" />
+          <End Role="Bill_detail" Type="Self.Bill_detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Discount_by_Rank">
+              <PropertyRef Name="Discount_id" />
+            </Principal>
+            <Dependent Role="Bill_detail">
+              <PropertyRef Name="Discount_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+>>>>>>> parent of 81e688c (sửa 1 số service và 1 số frm):QLTP.DAL/QLTP_Model.edmx
         <Association Name="FK__Bill_deta__Produ__5629CD9C">
           <End Role="Product" Type="Self.Product" Multiplicity="1" />
           <End Role="Bill_detail" Type="Self.Bill_detail" Multiplicity="*" />
@@ -189,7 +210,28 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Discount___Rank___5441852A">
+<<<<<<< HEAD:QLTP.DAL/QLTP_Entities.edmx
+        <Association Name="FK__Employee__Userna__534D60F1">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+=======
+        <Association Name="FK__Discount___Rank___571DF1D5">
+          <End Role="Rank" Type="Self.Rank" Multiplicity="1" />
+          <End Role="Discount_by_Rank" Type="Self.Discount_by_Rank" Multiplicity="*" />
+>>>>>>> parent of 81e688c (sửa 1 số service và 1 số frm):QLTP.DAL/QLTP_Model.edmx
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="Username" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+<<<<<<< HEAD:QLTP.DAL/QLTP_Entities.edmx
+        <Association Name="FK__Employee__Userna__619B8048">
+=======
+        <Association Name="FK__Discount___Rank___68487DD7">
           <End Role="Rank" Type="Self.Rank" Multiplicity="1" />
           <End Role="Discount_by_Rank" Type="Self.Discount_by_Rank" Multiplicity="*" />
           <ReferentialConstraint>
@@ -201,7 +243,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Employee__Userna__4E88ABD4">
+        <Association Name="FK__Employee__Userna__5812160E">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="Username" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Employee__Userna__693CA210">
+>>>>>>> parent of 81e688c (sửa 1 số service và 1 số frm):QLTP.DAL/QLTP_Model.edmx
           <End Role="Account" Type="Self.Account" Multiplicity="1" />
           <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
           <ReferentialConstraint>
@@ -222,6 +277,20 @@
             </Principal>
             <Dependent Role="Product">
               <PropertyRef Name="Product_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bill_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="Cus_id" />
+              <PropertyRef Name="Rank_id" />
+            </Principal>
+            <Dependent Role="Bill">
+              <PropertyRef Name="Cus_id" />
+              <PropertyRef Name="Rank_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -256,17 +325,16 @@
           <EntitySet Name="Bill" EntityType="Self.Bill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Bill_detail" EntityType="Self.Bill_detail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Discount_by_Rank" EntityType="Self.Discount_by_Rank" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product_Item" EntityType="Self.Product_Item" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product_type" EntityType="Self.Product_type" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Rank" EntityType="Self.Rank" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Bill__Cus_id__5070F446" Association="Self.FK__Bill__Cus_id__5070F446">
-            <End Role="Customer" EntitySet="Customer" />
+          <AssociationSet Name="FK__Bill__Emp_id__5165187F" Association="Self.FK__Bill__Emp_id__5165187F">
+            <End Role="Employee" EntitySet="Employee" />
             <End Role="Bill" EntitySet="Bill" />
           </AssociationSet>
-          <AssociationSet Name="FK__Bill__Emp_id__5165187F" Association="Self.FK__Bill__Emp_id__5165187F">
+          <AssociationSet Name="FK__Bill__Emp_id__656C112C" Association="Self.FK__Bill__Emp_id__656C112C">
             <End Role="Employee" EntitySet="Employee" />
             <End Role="Bill" EntitySet="Bill" />
           </AssociationSet>
@@ -274,10 +342,21 @@
             <End Role="Bill" EntitySet="Bill" />
             <End Role="Bill_detail" EntitySet="Bill_detail" />
           </AssociationSet>
-          <AssociationSet Name="FK__Bill_deta__Disco__5535A963" Association="Self.FK__Bill_deta__Disco__5535A963">
+<<<<<<< HEAD:QLTP.DAL/QLTP_Entities.edmx
+=======
+          <AssociationSet Name="FK__Bill_deta__Bill___66603565" Association="Self.FK__Bill_deta__Bill___66603565">
+            <End Role="Bill" EntitySet="Bill" />
+            <End Role="Bill_detail" EntitySet="Bill_detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Bill_deta__Disco__534D60F1" Association="Self.FK__Bill_deta__Disco__534D60F1">
             <End Role="Discount_by_Rank" EntitySet="Discount_by_Rank" />
             <End Role="Bill_detail" EntitySet="Bill_detail" />
           </AssociationSet>
+          <AssociationSet Name="FK__Bill_deta__Disco__6754599E" Association="Self.FK__Bill_deta__Disco__6754599E">
+            <End Role="Discount_by_Rank" EntitySet="Discount_by_Rank" />
+            <End Role="Bill_detail" EntitySet="Bill_detail" />
+          </AssociationSet>
+>>>>>>> parent of 81e688c (sửa 1 số service và 1 số frm):QLTP.DAL/QLTP_Model.edmx
           <AssociationSet Name="FK__Bill_deta__Produ__5629CD9C" Association="Self.FK__Bill_deta__Produ__5629CD9C">
             <End Role="Product" EntitySet="Product" />
             <End Role="Bill_detail" EntitySet="Bill_detail" />
@@ -290,17 +369,37 @@
             <End Role="Account" EntitySet="Account" />
             <End Role="Customer" EntitySet="Customer" />
           </AssociationSet>
-          <AssociationSet Name="FK__Discount___Rank___5441852A" Association="Self.FK__Discount___Rank___5441852A">
+<<<<<<< HEAD:QLTP.DAL/QLTP_Entities.edmx
+          <AssociationSet Name="FK__Employee__Userna__534D60F1" Association="Self.FK__Employee__Userna__534D60F1">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Employee__Userna__619B8048" Association="Self.FK__Employee__Userna__619B8048">
+=======
+          <AssociationSet Name="FK__Discount___Rank___571DF1D5" Association="Self.FK__Discount___Rank___571DF1D5">
             <End Role="Rank" EntitySet="Rank" />
             <End Role="Discount_by_Rank" EntitySet="Discount_by_Rank" />
           </AssociationSet>
-          <AssociationSet Name="FK__Employee__Userna__4E88ABD4" Association="Self.FK__Employee__Userna__4E88ABD4">
+          <AssociationSet Name="FK__Discount___Rank___68487DD7" Association="Self.FK__Discount___Rank___68487DD7">
+            <End Role="Rank" EntitySet="Rank" />
+            <End Role="Discount_by_Rank" EntitySet="Discount_by_Rank" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Employee__Userna__5812160E" Association="Self.FK__Employee__Userna__5812160E">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Employee__Userna__693CA210" Association="Self.FK__Employee__Userna__693CA210">
+>>>>>>> parent of 81e688c (sửa 1 số service và 1 số frm):QLTP.DAL/QLTP_Model.edmx
             <End Role="Account" EntitySet="Account" />
             <End Role="Employee" EntitySet="Employee" />
           </AssociationSet>
           <AssociationSet Name="FK__Product__Product__571DF1D5" Association="Self.FK__Product__Product__571DF1D5">
             <End Role="Product_type" EntitySet="Product_type" />
             <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bill_Customer" Association="Self.FK_Bill_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Bill" EntitySet="Bill" />
           </AssociationSet>
           <AssociationSet Name="FK_Product_Item_Product_type" Association="Self.FK_Product_Item_Product_type">
             <End Role="Product_type" EntitySet="Product_type" />
@@ -324,7 +423,13 @@
           <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Role" Type="Byte" Nullable="false" />
           <NavigationProperty Name="Customer" Relationship="Self.FK__Customer__Userna__4F7CD00D" FromRole="Account" ToRole="Customer" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK__Employee__Userna__4E88ABD4" FromRole="Account" ToRole="Employee" />
+<<<<<<< HEAD:QLTP.DAL/QLTP_Entities.edmx
+          <NavigationProperty Name="Employee" Relationship="Self.FK__Employee__Userna__534D60F1" FromRole="Account" ToRole="Employee" />
+          <NavigationProperty Name="Employee1" Relationship="Self.FK__Employee__Userna__619B8048" FromRole="Account" ToRole="Employee" />
+=======
+          <NavigationProperty Name="Employee" Relationship="Self.FK__Employee__Userna__5812160E" FromRole="Account" ToRole="Employee" />
+          <NavigationProperty Name="Employee1" Relationship="Self.FK__Employee__Userna__693CA210" FromRole="Account" ToRole="Employee" />
+>>>>>>> parent of 81e688c (sửa 1 số service và 1 số frm):QLTP.DAL/QLTP_Model.edmx
         </EntityType>
         <EntityType Name="Bill">
           <Key>
@@ -335,9 +440,15 @@
           <Property Name="Emp_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Create_date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Total_Price" Type="Double" />
-          <NavigationProperty Name="Customer" Relationship="Self.FK__Bill__Cus_id__5070F446" FromRole="Bill" ToRole="Customer" />
+          <Property Name="Rank_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Employee" Relationship="Self.FK__Bill__Emp_id__5165187F" FromRole="Bill" ToRole="Employee" />
+          <NavigationProperty Name="Employee1" Relationship="Self.FK__Bill__Emp_id__656C112C" FromRole="Bill" ToRole="Employee" />
           <NavigationProperty Name="Bill_detail" Relationship="Self.FK__Bill_deta__Bill___52593CB8" FromRole="Bill" ToRole="Bill_detail" />
+<<<<<<< HEAD:QLTP.DAL/QLTP_Entities.edmx
+          <NavigationProperty Name="Customer" Relationship="Self.FK_Bill_Customer" FromRole="Bill" ToRole="Customer" />
+=======
+          <NavigationProperty Name="Bill_detail1" Relationship="Self.FK__Bill_deta__Bill___66603565" FromRole="Bill" ToRole="Bill_detail" />
+>>>>>>> parent of 81e688c (sửa 1 số service và 1 số frm):QLTP.DAL/QLTP_Model.edmx
         </EntityType>
         <EntityType Name="Bill_detail">
           <Key>
@@ -345,16 +456,21 @@
           </Key>
           <Property Name="Bill_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Product_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Discount_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Amount" Type="Int32" Nullable="false" />
           <Property Name="Price" Type="Double" Nullable="false" />
           <NavigationProperty Name="Bill" Relationship="Self.FK__Bill_deta__Bill___52593CB8" FromRole="Bill_detail" ToRole="Bill" />
-          <NavigationProperty Name="Discount_by_Rank" Relationship="Self.FK__Bill_deta__Disco__5535A963" FromRole="Bill_detail" ToRole="Discount_by_Rank" />
+<<<<<<< HEAD:QLTP.DAL/QLTP_Entities.edmx
+=======
+          <NavigationProperty Name="Bill1" Relationship="Self.FK__Bill_deta__Bill___66603565" FromRole="Bill_detail" ToRole="Bill" />
+          <NavigationProperty Name="Discount_by_Rank" Relationship="Self.FK__Bill_deta__Disco__534D60F1" FromRole="Bill_detail" ToRole="Discount_by_Rank" />
+          <NavigationProperty Name="Discount_by_Rank1" Relationship="Self.FK__Bill_deta__Disco__6754599E" FromRole="Bill_detail" ToRole="Discount_by_Rank" />
+>>>>>>> parent of 81e688c (sửa 1 số service và 1 số frm):QLTP.DAL/QLTP_Model.edmx
           <NavigationProperty Name="Product" Relationship="Self.FK__Bill_deta__Produ__5629CD9C" FromRole="Bill_detail" ToRole="Product" />
         </EntityType>
         <EntityType Name="Customer">
           <Key>
             <PropertyRef Name="Cus_id" />
+            <PropertyRef Name="Rank_id" />
           </Key>
           <Property Name="Cus_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
@@ -366,9 +482,11 @@
           <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Experience" Type="Double" Nullable="false" />
           <NavigationProperty Name="Account" Relationship="Self.FK__Customer__Userna__4F7CD00D" FromRole="Customer" ToRole="Account" />
-          <NavigationProperty Name="Bill" Relationship="Self.FK__Bill__Cus_id__5070F446" FromRole="Customer" ToRole="Bill" />
+          <NavigationProperty Name="Bill" Relationship="Self.FK_Bill_Customer" FromRole="Customer" ToRole="Bill" />
           <NavigationProperty Name="Rank" Relationship="Self.FK__Customer__Rank_i__534D60F1" FromRole="Customer" ToRole="Rank" />
         </EntityType>
+<<<<<<< HEAD:QLTP.DAL/QLTP_Entities.edmx
+=======
         <EntityType Name="Discount_by_Rank">
           <Key>
             <PropertyRef Name="Discount_id" />
@@ -376,9 +494,12 @@
           <Property Name="Discount_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Rank_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Discount_percent" Type="Double" Nullable="false" />
-          <NavigationProperty Name="Bill_detail" Relationship="Self.FK__Bill_deta__Disco__5535A963" FromRole="Discount_by_Rank" ToRole="Bill_detail" />
-          <NavigationProperty Name="Rank" Relationship="Self.FK__Discount___Rank___5441852A" FromRole="Discount_by_Rank" ToRole="Rank" />
+          <NavigationProperty Name="Bill_detail" Relationship="Self.FK__Bill_deta__Disco__534D60F1" FromRole="Discount_by_Rank" ToRole="Bill_detail" />
+          <NavigationProperty Name="Bill_detail1" Relationship="Self.FK__Bill_deta__Disco__6754599E" FromRole="Discount_by_Rank" ToRole="Bill_detail" />
+          <NavigationProperty Name="Rank" Relationship="Self.FK__Discount___Rank___571DF1D5" FromRole="Discount_by_Rank" ToRole="Rank" />
+          <NavigationProperty Name="Rank1" Relationship="Self.FK__Discount___Rank___68487DD7" FromRole="Discount_by_Rank" ToRole="Rank" />
         </EntityType>
+>>>>>>> parent of 81e688c (sửa 1 số service và 1 số frm):QLTP.DAL/QLTP_Model.edmx
         <EntityType Name="Employee">
           <Key>
             <PropertyRef Name="Emp_id" />
@@ -392,8 +513,15 @@
           <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Position" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Salary" Type="Double" Nullable="false" />
-          <NavigationProperty Name="Account" Relationship="Self.FK__Employee__Userna__4E88ABD4" FromRole="Employee" ToRole="Account" />
+<<<<<<< HEAD:QLTP.DAL/QLTP_Entities.edmx
+          <NavigationProperty Name="Account" Relationship="Self.FK__Employee__Userna__534D60F1" FromRole="Employee" ToRole="Account" />
+          <NavigationProperty Name="Account1" Relationship="Self.FK__Employee__Userna__619B8048" FromRole="Employee" ToRole="Account" />
+=======
+          <NavigationProperty Name="Account" Relationship="Self.FK__Employee__Userna__5812160E" FromRole="Employee" ToRole="Account" />
+          <NavigationProperty Name="Account1" Relationship="Self.FK__Employee__Userna__693CA210" FromRole="Employee" ToRole="Account" />
+>>>>>>> parent of 81e688c (sửa 1 số service và 1 số frm):QLTP.DAL/QLTP_Model.edmx
           <NavigationProperty Name="Bill" Relationship="Self.FK__Bill__Emp_id__5165187F" FromRole="Employee" ToRole="Bill" />
+          <NavigationProperty Name="Bill1" Relationship="Self.FK__Bill__Emp_id__656C112C" FromRole="Employee" ToRole="Bill" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -437,8 +565,13 @@
           </Key>
           <Property Name="Rank_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Rank_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Discount_by_rank" Type="Double" Nullable="false" />
           <NavigationProperty Name="Customer" Relationship="Self.FK__Customer__Rank_i__534D60F1" FromRole="Rank" ToRole="Customer" />
-          <NavigationProperty Name="Discount_by_Rank" Relationship="Self.FK__Discount___Rank___5441852A" FromRole="Rank" ToRole="Discount_by_Rank" />
+<<<<<<< HEAD:QLTP.DAL/QLTP_Entities.edmx
+=======
+          <NavigationProperty Name="Discount_by_Rank" Relationship="Self.FK__Discount___Rank___571DF1D5" FromRole="Rank" ToRole="Discount_by_Rank" />
+          <NavigationProperty Name="Discount_by_Rank1" Relationship="Self.FK__Discount___Rank___68487DD7" FromRole="Rank" ToRole="Discount_by_Rank" />
+>>>>>>> parent of 81e688c (sửa 1 số service và 1 số frm):QLTP.DAL/QLTP_Model.edmx
         </EntityType>
         <Association Name="FK__Customer__Userna__4F7CD00D">
           <End Role="Account" Type="Self.Account" Multiplicity="1" />
@@ -452,7 +585,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Employee__Userna__4E88ABD4">
+<<<<<<< HEAD:QLTP.DAL/QLTP_Entities.edmx
+        <Association Name="FK__Employee__Userna__534D60F1">
+=======
+        <Association Name="FK__Employee__Userna__5812160E">
           <End Role="Account" Type="Self.Account" Multiplicity="1" />
           <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
           <ReferentialConstraint>
@@ -464,19 +600,44 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Bill__Cus_id__5070F446">
-          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
-          <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
+        <Association Name="FK__Employee__Userna__693CA210">
+>>>>>>> parent of 81e688c (sửa 1 số service và 1 số frm):QLTP.DAL/QLTP_Model.edmx
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Customer">
-              <PropertyRef Name="Cus_id" />
+            <Principal Role="Account">
+              <PropertyRef Name="Username" />
             </Principal>
-            <Dependent Role="Bill">
-              <PropertyRef Name="Cus_id" />
+            <Dependent Role="Employee">
+              <PropertyRef Name="Username" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Employee__Userna__619B8048">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="Username" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Bill__Emp_id__5165187F">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Emp_id" />
+            </Principal>
+            <Dependent Role="Bill">
+              <PropertyRef Name="Emp_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Bill__Emp_id__656C112C">
           <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
           <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
           <ReferentialConstraint>
@@ -500,7 +661,24 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Bill_deta__Disco__5535A963">
+<<<<<<< HEAD:QLTP.DAL/QLTP_Entities.edmx
+        <Association Name="FK_Bill_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
+=======
+        <Association Name="FK__Bill_deta__Bill___66603565">
+          <End Role="Bill" Type="Self.Bill" Multiplicity="1" />
+          <End Role="Bill_detail" Type="Self.Bill_detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bill">
+              <PropertyRef Name="Bill_id" />
+            </Principal>
+            <Dependent Role="Bill_detail">
+              <PropertyRef Name="Bill_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Bill_deta__Disco__534D60F1">
           <End Role="Discount_by_Rank" Type="Self.Discount_by_Rank" Multiplicity="1" />
           <End Role="Bill_detail" Type="Self.Bill_detail" Multiplicity="*" />
           <ReferentialConstraint>
@@ -509,6 +687,21 @@
             </Principal>
             <Dependent Role="Bill_detail">
               <PropertyRef Name="Discount_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Bill_deta__Disco__6754599E">
+          <End Role="Discount_by_Rank" Type="Self.Discount_by_Rank" Multiplicity="1" />
+          <End Role="Bill_detail" Type="Self.Bill_detail" Multiplicity="*" />
+>>>>>>> parent of 81e688c (sửa 1 số service và 1 số frm):QLTP.DAL/QLTP_Model.edmx
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="Cus_id" />
+              <PropertyRef Name="Rank_id" />
+            </Principal>
+            <Dependent Role="Bill">
+              <PropertyRef Name="Cus_id" />
+              <PropertyRef Name="Rank_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -536,7 +729,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Discount___Rank___5441852A">
+<<<<<<< HEAD:QLTP.DAL/QLTP_Entities.edmx
+=======
+        <Association Name="FK__Discount___Rank___571DF1D5">
           <End Role="Rank" Type="Self.Rank" Multiplicity="1" />
           <End Role="Discount_by_Rank" Type="Self.Discount_by_Rank" Multiplicity="*" />
           <ReferentialConstraint>
@@ -548,6 +743,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Discount___Rank___68487DD7">
+          <End Role="Rank" Type="Self.Rank" Multiplicity="1" />
+          <End Role="Discount_by_Rank" Type="Self.Discount_by_Rank" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rank">
+              <PropertyRef Name="Rank_id" />
+            </Principal>
+            <Dependent Role="Discount_by_Rank">
+              <PropertyRef Name="Rank_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+>>>>>>> parent of 81e688c (sửa 1 số service và 1 số frm):QLTP.DAL/QLTP_Model.edmx
         <Association Name="FK__Product__Product__571DF1D5">
           <End Role="Product_type" Type="Self.Product_type" Multiplicity="1" />
           <End Role="Product" Type="Self.Product" Multiplicity="*" />
@@ -591,7 +799,6 @@
           <EntitySet Name="Bill" EntityType="Self.Bill" />
           <EntitySet Name="Bill_detail" EntityType="Self.Bill_detail" />
           <EntitySet Name="Customer" EntityType="Self.Customer" />
-          <EntitySet Name="Discount_by_Rank" EntityType="Self.Discount_by_Rank" />
           <EntitySet Name="Employee" EntityType="Self.Employee" />
           <EntitySet Name="Product" EntityType="Self.Product" />
           <EntitySet Name="Product_Item" EntityType="Self.Product_Item" />
@@ -601,15 +808,27 @@
             <End Role="Account" EntitySet="Account" />
             <End Role="Customer" EntitySet="Customer" />
           </AssociationSet>
-          <AssociationSet Name="FK__Employee__Userna__4E88ABD4" Association="Self.FK__Employee__Userna__4E88ABD4">
+<<<<<<< HEAD:QLTP.DAL/QLTP_Entities.edmx
+          <AssociationSet Name="FK__Employee__Userna__534D60F1" Association="Self.FK__Employee__Userna__534D60F1">
+=======
+          <AssociationSet Name="FK__Employee__Userna__5812160E" Association="Self.FK__Employee__Userna__5812160E">
             <End Role="Account" EntitySet="Account" />
             <End Role="Employee" EntitySet="Employee" />
           </AssociationSet>
-          <AssociationSet Name="FK__Bill__Cus_id__5070F446" Association="Self.FK__Bill__Cus_id__5070F446">
-            <End Role="Customer" EntitySet="Customer" />
-            <End Role="Bill" EntitySet="Bill" />
+          <AssociationSet Name="FK__Employee__Userna__693CA210" Association="Self.FK__Employee__Userna__693CA210">
+>>>>>>> parent of 81e688c (sửa 1 số service và 1 số frm):QLTP.DAL/QLTP_Model.edmx
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Employee__Userna__619B8048" Association="Self.FK__Employee__Userna__619B8048">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Employee" EntitySet="Employee" />
           </AssociationSet>
           <AssociationSet Name="FK__Bill__Emp_id__5165187F" Association="Self.FK__Bill__Emp_id__5165187F">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Bill" EntitySet="Bill" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Bill__Emp_id__656C112C" Association="Self.FK__Bill__Emp_id__656C112C">
             <End Role="Employee" EntitySet="Employee" />
             <End Role="Bill" EntitySet="Bill" />
           </AssociationSet>
@@ -617,9 +836,23 @@
             <End Role="Bill" EntitySet="Bill" />
             <End Role="Bill_detail" EntitySet="Bill_detail" />
           </AssociationSet>
-          <AssociationSet Name="FK__Bill_deta__Disco__5535A963" Association="Self.FK__Bill_deta__Disco__5535A963">
+<<<<<<< HEAD:QLTP.DAL/QLTP_Entities.edmx
+          <AssociationSet Name="FK_Bill_Customer" Association="Self.FK_Bill_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Bill" EntitySet="Bill" />
+=======
+          <AssociationSet Name="FK__Bill_deta__Bill___66603565" Association="Self.FK__Bill_deta__Bill___66603565">
+            <End Role="Bill" EntitySet="Bill" />
+            <End Role="Bill_detail" EntitySet="Bill_detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Bill_deta__Disco__534D60F1" Association="Self.FK__Bill_deta__Disco__534D60F1">
             <End Role="Discount_by_Rank" EntitySet="Discount_by_Rank" />
             <End Role="Bill_detail" EntitySet="Bill_detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Bill_deta__Disco__6754599E" Association="Self.FK__Bill_deta__Disco__6754599E">
+            <End Role="Discount_by_Rank" EntitySet="Discount_by_Rank" />
+            <End Role="Bill_detail" EntitySet="Bill_detail" />
+>>>>>>> parent of 81e688c (sửa 1 số service và 1 số frm):QLTP.DAL/QLTP_Model.edmx
           </AssociationSet>
           <AssociationSet Name="FK__Bill_deta__Produ__5629CD9C" Association="Self.FK__Bill_deta__Produ__5629CD9C">
             <End Role="Product" EntitySet="Product" />
@@ -629,10 +862,17 @@
             <End Role="Rank" EntitySet="Rank" />
             <End Role="Customer" EntitySet="Customer" />
           </AssociationSet>
-          <AssociationSet Name="FK__Discount___Rank___5441852A" Association="Self.FK__Discount___Rank___5441852A">
+<<<<<<< HEAD:QLTP.DAL/QLTP_Entities.edmx
+=======
+          <AssociationSet Name="FK__Discount___Rank___571DF1D5" Association="Self.FK__Discount___Rank___571DF1D5">
             <End Role="Rank" EntitySet="Rank" />
             <End Role="Discount_by_Rank" EntitySet="Discount_by_Rank" />
           </AssociationSet>
+          <AssociationSet Name="FK__Discount___Rank___68487DD7" Association="Self.FK__Discount___Rank___68487DD7">
+            <End Role="Rank" EntitySet="Rank" />
+            <End Role="Discount_by_Rank" EntitySet="Discount_by_Rank" />
+          </AssociationSet>
+>>>>>>> parent of 81e688c (sửa 1 số service và 1 số frm):QLTP.DAL/QLTP_Model.edmx
           <AssociationSet Name="FK__Product__Product__571DF1D5" Association="Self.FK__Product__Product__571DF1D5">
             <End Role="Product_type" EntitySet="Product_type" />
             <End Role="Product" EntitySet="Product" />
@@ -669,6 +909,7 @@
                 <ScalarProperty Name="Emp_id" ColumnName="Emp_id" />
                 <ScalarProperty Name="Create_date" ColumnName="Create_date" />
                 <ScalarProperty Name="Total_Price" ColumnName="Total_Price" />
+                <ScalarProperty Name="Rank_id" ColumnName="Rank_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -677,7 +918,6 @@
               <MappingFragment StoreEntitySet="Bill_detail">
                 <ScalarProperty Name="Bill_id" ColumnName="Bill_id" />
                 <ScalarProperty Name="Product_id" ColumnName="Product_id" />
-                <ScalarProperty Name="Discount_id" ColumnName="Discount_id" />
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
               </MappingFragment>
@@ -695,15 +935,6 @@
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Experience" ColumnName="Experience" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Discount_by_Rank">
-            <EntityTypeMapping TypeName="QLTP_Model.Discount_by_Rank">
-              <MappingFragment StoreEntitySet="Discount_by_Rank">
-                <ScalarProperty Name="Discount_id" ColumnName="Discount_id" />
-                <ScalarProperty Name="Rank_id" ColumnName="Rank_id" />
-                <ScalarProperty Name="Discount_percent" ColumnName="Discount_percent" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -758,6 +989,7 @@
               <MappingFragment StoreEntitySet="Rank">
                 <ScalarProperty Name="Rank_id" ColumnName="Rank_id" />
                 <ScalarProperty Name="Rank_name" ColumnName="Rank_name" />
+                <ScalarProperty Name="Discount_by_rank" ColumnName="Discount_by_rank" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
