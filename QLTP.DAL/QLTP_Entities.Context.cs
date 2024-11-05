@@ -29,7 +29,6 @@ namespace QLTP.DAL
         public virtual DbSet<Bill> Bill { get; set; }
         public virtual DbSet<Bill_detail> Bill_detail { get; set; }
         public virtual DbSet<Customer> Customer { get; set; }
-        public virtual DbSet<Discount_by_Rank> Discount_by_Rank { get; set; }
         public virtual DbSet<Employee> Employee { get; set; }
         public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<Product_Item> Product_Item { get; set; }

@@ -84,5 +84,21 @@ namespace QLTP.BLL
                 return productType?.Product_type_name; // Return product type name or null if not found
             }
         }
+
+        // Method to get product information from the service by product type name
+        public Product GetProductByProductTypeName(string productTypeName)
+        {
+            using (QLTP_Entities db = new QLTP_Entities())
+            {
+                // Find the product type by its name
+                var productType = db.Product_type.FirstOrDefault(p => p.Product_type_name == productTypeName);
+                if (productType != null)
+                {
+                    // Find the first product that matches the product type
+                    return db.Product.FirstOrDefault(p => p.Product_type_id == productType.Product_type_id);
+                }
+                return null; // Return null if no product or product type is found
+            }
+        }
     }
 }

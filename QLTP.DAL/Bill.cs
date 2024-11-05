@@ -19,9 +19,10 @@ namespace QLTP.DAL
         public string Emp_id { get; set; }
         public System.DateTime Create_date { get; set; }
         public Nullable<double> Total_Price { get; set; }
+        public string Rank_id { get; set; }
     
-        public virtual Customer Customer { get; set; }
         public virtual Employee Employee { get; set; }
         public virtual Bill_detail Bill_detail { get; set; }
+        public virtual Customer Customer { get; set; }
     }
 }

@@ -31,6 +31,7 @@ namespace QLTP.DAL
         public double Salary { get; set; }
     
         public virtual Account Account { get; set; }
+        public virtual Account Account1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Bill> Bill { get; set; }
     }

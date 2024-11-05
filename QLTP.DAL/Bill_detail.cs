@@ -16,12 +16,10 @@ namespace QLTP.DAL
     {
         public string Bill_id { get; set; }
         public string Product_id { get; set; }
-        public string Discount_id { get; set; }
         public int Amount { get; set; }
         public double Price { get; set; }
     
         public virtual Bill Bill { get; set; }
-        public virtual Discount_by_Rank Discount_by_Rank { get; set; }
         public virtual Product Product { get; set; }
     }
 }

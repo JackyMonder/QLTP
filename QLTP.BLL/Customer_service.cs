@@ -98,7 +98,7 @@ namespace QLTP.BLL
         // Method to get all unique customer IDs
         public List<string> Customer_get_all_user_ids()
         {
-            using (QLTP_Entities db = new QLTP_Entities())
+            using (QLTP_Entities db = new   QLTP_Entities())
             {
                 return db.Customer.Select(c => c.Cus_id).Distinct().ToList();
             }
@@ -139,6 +139,17 @@ namespace QLTP.BLL
                 return db.Customer
                     .Where(c => c.Full_name.Contains(fullName)) // Adjust the logic as necessary
                     .ToList();
+            }
+        }
+
+        public Customer GetCustomerByUsername(string username)
+        {
+            if (string.IsNullOrEmpty(username))
+                return null; // Error: Invalid product_id
+
+            using (QLTP_Entities db = new QLTP_Entities())
+            {
+                return db.Customer.FirstOrDefault(p => p.Username == username); // Find product by product_id
             }
         }
     }

@@ -94,6 +94,15 @@ namespace QLTP.BLL
                 return db.Employee.FirstOrDefault(e => e.Emp_id == employee_id);
             }
         }
+        public List<Employee> Employee_search_by_full_name(string fullName)
+        {
+            using (QLTP_Entities db = new QLTP_Entities())
+            {
+                return db.Employee
+                    .Where(c => c.Full_name.Contains(fullName)) // Adjust the logic as necessary
+                    .ToList();
+            }
+        }
 
         public List<string> Employee_get_all_user_ids()
         {
